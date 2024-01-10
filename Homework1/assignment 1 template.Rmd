@@ -5,9 +5,9 @@ output: html_document
 ---
 
 My favorite distribution is $$F\left(x;\;\lambda\right)=\begin{cases}
-0 & \text{para } x < 0 \\
-x^{2\lambda} & \text{para } 0 \leq x \leq 1 \\
-1 & \text{para } x > 1
+0 & \text{for } x < 0 \\
+x^{2\lambda} & \text{for } 0 \leq x \leq 1 \\
+1 & \text{for } x > 1
 \end{cases}
 $$
 
