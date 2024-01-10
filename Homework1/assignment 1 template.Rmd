@@ -41,9 +41,9 @@ plot(dens,
      main = "Density Estimate vs. Population Density",
      xlab = "Values",
      xlim = c(0, 1),
-     ylim = c(0, 2))
+     ylim = c(0, 3))
 
-curve(x^(2 * lambda),
+curve((2 * lambda) * x^(2 * lambda - 1),
       add = TRUE,
       col = "red")
 
