@@ -1,6 +1,6 @@
 ---
 title: "Central Limit Theorem"
-author: "My Name"
+author: "Brayan Duran Medina"
 output: html_document
 ---
 
@@ -15,10 +15,20 @@ For this assignment I'm using parameter values $\lambda=1$.
 
 Let's take a sample of size 100 from that distribution:
 ```{r}
+lambda <- 1
+set.seed(0)
+sample_size <- 100
+
+sample_x <- (runif(sample_size))^(1 / (2 * lambda))
 ```
 
 Here is the histogram of the sample:
 ```{r}
+hist(sample_x,
+     breaks = 30,
+     main = "Histogram of Sample",
+     xlab = "Sample Values")
+
 ```
 
 Here is a smooth sample estimate of the density, and the actual population density for comparison:
