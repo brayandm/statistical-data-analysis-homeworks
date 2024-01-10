@@ -29,7 +29,6 @@ sample_x <- generator(sample_size)
 Here is the histogram of the sample:
 ```{r}
 hist(sample_x,
-     breaks = 20,
      main = "Histogram of Sample",
      xlab = "Sample Values")
 
