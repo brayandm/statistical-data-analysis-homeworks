@@ -19,7 +19,11 @@ lambda <- 1
 set.seed(0)
 sample_size <- 100
 
-sample_x <- (runif(sample_size))^(1 / (2 * lambda))
+generator <- function(n) {
+  runif(n)^(1 / (2 * lambda))
+}
+
+sample_x <- generator(sample_size)
 ```
 
 Here is the histogram of the sample:
@@ -51,18 +55,50 @@ legend("topright",
 
 Central limit theorem states that the distribution of a sample mean gets normal as sample size increases. Let's test that. For several values of $n$ we'll take samples of size $n$ from our distribution 1000 times, and calculate sample mean for each sample. We'll use histograms and kernel density estimates to compare the distribution of those sample means to the normal approximation suggested by the central limit theorem. 
 
-CLT states that sample mean has the same expectation as the original variable, and the variance $\mathbb{D}\bar{X}_n=\frac{\mathbb{D}X}{n} = \frac{\lambda}{\lambda + 1} - \left(\frac{2\lambda}{2\lambda + 1}\right)^2$
+CLT states that sample mean has the same expectation as the original variable, and the variance $\mathbb{D}\bar{X}_n=\frac{\mathbb{D}X}{n} = \frac{\frac{\lambda}{\lambda + 1} - \left(\frac{2\lambda}{2\lambda + 1}\right)^2}{n}$
+
+```{r}
+plotter <- function(n, num_samples = 1000) {
+  sample_means <- replicate(num_samples, mean(generator(n)))
+
+  mu <- 2 * lambda / (2 * lambda + 1)
+
+  sigma <- sqrt((lambda / (lambda + 1) - mu^2) / n)
+
+  hist(sample_means,
+       probability = TRUE,
+       main = paste("n=", n),
+       xlab = "Sample Mean",
+       ylab = "Density")
+
+  dens <- density(sample_means)
+
+  lines(dens, col = "blue")
+
+  curve(dnorm(x, mean = mu, sd = sigma),
+        add = TRUE,
+        col = "red")
+
+  legend("topright",
+         legend = c("Sample", "Normal"),
+         col = c("blue", "red"),
+         lty = 1)
+}
+```
 
 For n=5:
 ```{r}
 #plot of the histogram, kernel density estimate and a normal approximation from CLT to compare 
+plotter(5)
 ```
 
 For n=10:
 ```{r}
+plotter(10)
 ```
 
 For n=50:
 ```{r}
+plotter(50)
 ```
 
