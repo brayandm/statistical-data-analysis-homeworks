@@ -25,7 +25,7 @@ sample_x <- (runif(sample_size))^(1 / (2 * lambda))
 Here is the histogram of the sample:
 ```{r}
 hist(sample_x,
-     breaks = 30,
+     breaks = 20,
      main = "Histogram of Sample",
      xlab = "Sample Values")
 
@@ -33,11 +33,25 @@ hist(sample_x,
 
 Here is a smooth sample estimate of the density, and the actual population density for comparison:
 ```{r}
+dens <- density(sample_x)
+plot(dens,
+     main = "Density Estimate vs. Population Density",
+     xlab = "Values",
+     xlim = c(0, 1),
+     ylim = c(0, 2))
+
+curve(x^(2 * lambda),
+      add = TRUE,
+      col = "red")
+
+legend("topright",
+       legend = c("Sample Density", "Population Density"),
+       col = c("black", "red"), lty = 1)
 ```
 
 Central limit theorem states that the distribution of a sample mean gets normal as sample size increases. Let's test that. For several values of $n$ we'll take samples of size $n$ from our distribution 1000 times, and calculate sample mean for each sample. We'll use histograms and kernel density estimates to compare the distribution of those sample means to the normal approximation suggested by the central limit theorem. 
 
-CLT states that sample mean has the same expectation as the original variable, and the variance $\mathbb{D}\bar{X}_n=\frac{\mathbb{D}X}{n} = \text{(EXPRESSION FOR YOUR DISTRIBUTION)}$
+CLT states that sample mean has the same expectation as the original variable, and the variance $\mathbb{D}\bar{X}_n=\frac{\mathbb{D}X}{n} = \frac{\lambda}{\lambda + 1} - \left(\frac{2\lambda}{2\lambda + 1}\right)^2$
 
 For n=5:
 ```{r}
