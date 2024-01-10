@@ -1,0 +1,38 @@
+---
+title: "Central Limit Theorem"
+author: "My Name"
+output: html_document
+---
+
+My favorite distribution is $$F\left(x\right)=$$
+For this assignment I'm using parameter values .....
+
+Let's take a sample of size 100 from that distribution:
+```{r}
+```
+
+Here is the histogram of the sample:
+```{r}
+```
+
+Here is a smooth sample estimate of the density, and the actual population density for comparison:
+```{r}
+```
+
+Central limit theorem states that the distribution of a sample mean gets normal as sample size increases. Let's test that. For several values of $n$ we'll take samples of size $n$ from our distribution 1000 times, and calculate sample mean for each sample. We'll use histograms and kernel density estimates to compare the distribution of those sample means to the normal approximation suggested by the central limit theorem. 
+
+CLT states that sample mean has the same expectation as the original variable, and the variance $\mathbb{D}\bar{X}_n=\frac{\mathbb{D}X}{n} = \text{(EXPRESSION FOR YOUR DISTRIBUTION)}$
+
+For n=5:
+```{r}
+#plot of the histogram, kernel density estimate and a normal approximation from CLT to compare 
+```
+
+For n=10:
+```{r}
+```
+
+For n=50:
+```{r}
+```
+
