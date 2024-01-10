@@ -4,14 +4,14 @@ author: "My Name"
 output: html_document
 ---
 
-My favorite distribution is $$F\left(x\right)=\begin{cases}
+My favorite distribution is $$F\left(x;\;\lambda\right)=\begin{cases}
 0 & \text{para } x < 0 \\
-x^2 & \text{para } 0 \leq x \leq 1 \\
+x^{2\lambda} & \text{para } 0 \leq x \leq 1 \\
 1 & \text{para } x > 1
 \end{cases}
 $$
 
-For this assignment I'm using parameter values .....
+For this assignment I'm using parameter values $\lambda=1$.
 
 Let's take a sample of size 100 from that distribution:
 ```{r}
