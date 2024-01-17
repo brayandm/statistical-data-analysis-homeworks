@@ -54,28 +54,26 @@ for (i in seq_len(nrow(data_2014))) {
 data_2014$correct_answers
 ```
 
-# Demographic variables
-```{r}
-demographic_variables <- c("`Respondents sex`",
-                           "`Age of respondent`",
-                           "`Race of respondent`",
-                           "`Marital status`",
-                           "`Number of children`",
-                           "`Highest year of school completed`",
-                           "`Sexual orientation`",
-                           "`Respondents income`",
-                           "`Does r own or rent home?`")
-
-```
-
 # ANOVA test for demographic variables
 ```{r}
 
-anova_formula <- as.formula(paste("correct_answers ~",
-                                  paste(demographic_variables,
-                                        collapse = " + ")))
-
-anova_result <- aov(anova_formula, data = data_2014)
+anova_result <- aov(correct_answers ~
+                      data_2014$`Respondents sex` +
+                        data_2014$`Age of respondent` +
+                        data_2014$`Race of respondent` +
+                        data_2014$`Marital status` +
+                        data_2014$`Number of children` +
+                        data_2014$`Highest year of school completed` +
+                        data_2014$`Sexual orientation` +
+                        data_2014$`Respondents income` +
+                        data_2014$`Does r own or rent home?`, data = data_2014)
 
 summary(anova_result)
+```
+
+# TukeyHSD test for demographic variables
+```{r}
+tukey_result <- TukeyHSD(anova_result)
+
+tukey_result
 ```
