@@ -54,6 +54,17 @@ for (i in seq_len(nrow(data_2014))) {
 data_2014$correct_answers
 ```
 
+# Histogram of Number of Correct Answers
+```{r}
+data_2014_non_zero <- subset(data_2014, correct_answers > 0)
+
+hist(data_2014_non_zero$correct_answers,
+     main = "Histogram of Correct Answers",
+     xlab = "Number of Correct Answers",
+     ylab = "Frequency",
+     col = "blue")
+```
+
 # ANOVA test for demographic variables
 ```{r}
 
