@@ -105,7 +105,7 @@ The objective of this analysis was to assess the impact of various demographic f
 
 ## Methodology
 
-Analysis of Variance (ANOVA) was employed to evaluate the influence of demographic variables on scientific literacy. The variables included respondents' sex, race, number of children, educational attainment, sexual orientation, and income. Significant findings were further explored using Post Hoc tests.
+Analysis of Variance (ANOVA) was employed to evaluate the influence of demographic variables on scientific literacy. The variables included respondents' sex, age, race, marital status, number of children, educational level, sexual orientation, income and home ownership. Significant findings were further explored using Post Hoc tests.
 
 ## Key Findings
 
