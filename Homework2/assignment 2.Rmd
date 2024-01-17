@@ -87,6 +87,8 @@ for (var in demographic_variables) {
 
   print(summary(anova_result))
 
+  boxplot(data_2014$correct_answers ~ data_2014[[var]], main=paste("Boxplot of Correct Answers by", var), xlab=var, ylab="Number of Correct Answers", col="lightgreen")
+
   if (summary(anova_result)[[1]][["Pr(>F)"]][1] < 0.05) {
 
     significant_variables <- c(significant_variables, var)
