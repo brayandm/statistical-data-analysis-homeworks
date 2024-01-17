@@ -96,3 +96,31 @@ for (var in significant_variables) {
   print(posthoc_result)
 }
 ```
+
+## Summary Report on the Statistical Analysis of GSS 2014 Data
+
+# Objective
+
+The objective of this analysis was to assess the impact of various demographic factors on scientific knowledge as indicated by the number of correct science answers in the General Social Survey (GSS) 2014 data.
+
+# Methodology
+
+Analysis of Variance (ANOVA) was employed to evaluate the influence of demographic variables on scientific literacy. The variables included respondents' sex, race, number of children, educational attainment, sexual orientation, and income. Significant findings were further explored using Post Hoc tests.
+
+# Key Findings
+
+Respondent's Sex: A significant difference in scientific knowledge was observed between males and females.
+
+Race of Respondent: Racial background showed a notable impact on scientific literacy levels.
+
+Number of Children: The number of children a respondent has was significantly related to their scientific knowledge.
+
+Educational Level: Higher education levels corresponded to greater scientific knowledge.
+
+Sexual Orientation: Variations in scientific literacy were evident across different sexual orientations.
+
+Income Levels: Respondents' income levels significantly influenced their scientific literacy.
+
+# Conclusions
+
+The analysis confidently suggests that demographic factors, namely sex, race, number of children, education, sexual orientation, and income level, play a significant role in determining the level of scientific knowledge among individuals. These insights are crucial for formulating targeted educational strategies and public awareness campaigns to enhance scientific literacy across diverse demographic segments.
