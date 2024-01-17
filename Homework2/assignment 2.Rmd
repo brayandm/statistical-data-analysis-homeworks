@@ -109,6 +109,13 @@ for (var in significant_variables) {
   print(paste("Post-Hoc Test for", var))
 
   print(posthoc_result)
+
+  aggregate_data <- aggregate(correct_answers ~ data_2014[[var]],
+                              data = data_2014, mean)
+  barplot(aggregate_data$correct_answers,
+          names.arg = aggregate_data[, 1],
+          main = paste("Bar Plot of Mean Correct Answers by", var),
+          xlab = var, ylab = "Mean Number of Correct Answers", col = "coral")
 }
 ```
 
