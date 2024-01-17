@@ -1,0 +1,29 @@
+# Importing libraries
+```{r}
+library(readxl)
+```
+
+# Read data from Excel file
+```{r}
+data <- read_excel("GSS_1972_2014.xlsx")
+```
+
+# Print column names
+
+```{r}
+colnames(data)
+```
+
+# Correct answers to eleven Science questions
+```{r}
+correct_answers <- c("True", "False", "True", "False", "True",
+                     "False", "True", "True", "True",
+                     "Earth around sun", "One year")
+```
+
+# Extract people from year 2014
+```{r}
+data_2014 <- data[data$"Gss year for this respondent" == 2014, ]
+
+data_2014
+```
