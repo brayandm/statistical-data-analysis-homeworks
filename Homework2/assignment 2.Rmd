@@ -1,6 +1,7 @@
 # Importing libraries
 ```{r}
 library(readxl)
+library(stats)
 ```
 
 # Read data from Excel file
@@ -9,7 +10,6 @@ data <- read_excel("GSS_1972_2014.xlsx")
 ```
 
 # Print column names
-
 ```{r}
 colnames(data)
 ```
@@ -26,4 +26,50 @@ correct_answers <- c("True", "False", "True", "False", "True",
 data_2014 <- data[data$"Gss year for this respondent" == 2014, ]
 
 data_2014
+```
+
+# Extract columns names with answers to Science questions
+```{r}
+science_questions <- colnames(data_2014)[c(42:52)]
+
+science_questions
+```
+
+# Add new column with number of correct answers
+```{r}
+data_2014$correct_answers <- NA
+
+
+for (i in seq_len(nrow(data_2014))) {
+  data_2014$correct_answers[i] <-
+    sum(data_2014[i, science_questions] == correct_answers)
+}
+
+data_2014$correct_answers
+```
+
+# Demographic variables
+```{r}
+demographic_variables <- c("`Respondents sex`",
+                           "`Age of respondent`",
+                           "`Race of respondent`",
+                           "`Marital status`",
+                           "`Number of children`",
+                           "`Highest year of school completed`",
+                           "`Sexual orientation`",
+                           "`Respondents income`",
+                           "`Does r own or rent home?`")
+
+```
+
+# ANOVA test for demographic variables
+```{r}
+
+anova_formula <- as.formula(paste("correct_answers ~",
+                                  paste(demographic_variables,
+                                        collapse = " + ")))
+
+anova_result <- aov(anova_formula, data = data_2014)
+
+summary(anova_result)
 ```
