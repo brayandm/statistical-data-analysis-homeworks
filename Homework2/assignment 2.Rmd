@@ -57,23 +57,42 @@ data_2014$correct_answers
 # ANOVA test for demographic variables
 ```{r}
 
-anova_result <- aov(correct_answers ~
-                      data_2014$`Respondents sex` +
-                        data_2014$`Age of respondent` +
-                        data_2014$`Race of respondent` +
-                        data_2014$`Marital status` +
-                        data_2014$`Number of children` +
-                        data_2014$`Highest year of school completed` +
-                        data_2014$`Sexual orientation` +
-                        data_2014$`Respondents income` +
-                        data_2014$`Does r own or rent home?`, data = data_2014)
+demographic_variables <- c("Respondents sex",
+                           "Age of respondent",
+                           "Race of respondent",
+                           "Marital status",
+                           "Number of children",
+                           "Highest year of school completed",
+                           "Sexual orientation",
+                           "Respondents income",
+                           "Does r own or rent home?")
 
-summary(anova_result)
+significant_variables <- c()
+
+for (var in demographic_variables) {
+  anova_result <- aov(correct_answers ~ data_2014[[var]], data = data_2014)
+
+  print(paste("ANOVA for", var))
+
+  print(summary(anova_result))
+
+  if (summary(anova_result)[[1]][["Pr(>F)"]][1] < 0.05) {
+
+    significants_variables <- c(significants_variables, var)
+  }
+}
 ```
 
-# TukeyHSD test for demographic variables
+# Make a Post Hoc test for significant variables
 ```{r}
-tukey_result <- TukeyHSD(anova_result)
 
-tukey_result
+for (var in significants_variables) {
+  anova_result <- aov(correct_answers ~ data_2014[[var]], data = data_2014)
+
+  posthoc_result <- TukeyHSD(anova_result)
+
+  print(paste("Post-Hoc Test for", var))
+
+  print(posthoc_result)
+}
 ```
