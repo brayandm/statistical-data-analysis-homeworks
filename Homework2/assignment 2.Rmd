@@ -1,3 +1,9 @@
+---
+title: "Estimation and Hypothesis Testing"
+author: "Brayan Duran Medina"
+output: html_document
+---
+
 # Importing libraries
 ```{r}
 library(readxl)
