@@ -78,7 +78,7 @@ for (var in demographic_variables) {
 
   if (summary(anova_result)[[1]][["Pr(>F)"]][1] < 0.05) {
 
-    significants_variables <- c(significants_variables, var)
+    significant_variables <- c(significant_variables, var)
   }
 }
 ```
@@ -86,7 +86,7 @@ for (var in demographic_variables) {
 # Make a Post Hoc test for significant variables
 ```{r}
 
-for (var in significants_variables) {
+for (var in significant_variables) {
   anova_result <- aov(correct_answers ~ data_2014[[var]], data = data_2014)
 
   posthoc_result <- TukeyHSD(anova_result)
