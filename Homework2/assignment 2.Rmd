@@ -41,6 +41,14 @@ science_questions <- colnames(data_2014)[c(42:52)]
 science_questions
 ```
 
+# Remove people that did not answer any Science question
+```{r}
+data_2014 <- data_2014[rowSums(data_2014[science_questions] == "Not applicable")
+                       != length(science_questions), ]
+
+data_2014
+```
+
 # Add new column with number of correct answers
 ```{r}
 data_2014$correct_answers <- NA
@@ -56,9 +64,7 @@ data_2014$correct_answers
 
 # Histogram of Number of Correct Answers
 ```{r}
-data_2014_non_zero <- subset(data_2014, correct_answers > 0)
-
-hist(data_2014_non_zero$correct_answers,
+hist(data_2014$correct_answers,
      main = "Histogram of Correct Answers",
      xlab = "Number of Correct Answers",
      ylab = "Frequency",
