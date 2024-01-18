@@ -143,18 +143,51 @@ The methodology involves analyzing each demographic factor's influence on the re
 
 ## Key Findings
 
-Respondent's Sex: A significant difference in scientific knowledge was observed between males and females.
+Educational Level (Highest year of school completed):
 
-Race of Respondent: Racial background showed a notable impact on scientific literacy levels.
+- F value: 16.02, Pr(>F): <2e-16.
+- Explanation: This strong statistical significance indicates that educational attainment is a key factor in scientific literacy. Higher education levels likely provide more comprehensive exposure to science, leading to better understanding.
 
-Number of Children: The number of children a respondent has was significantly related to their scientific knowledge.
+Race of Respondent (Race of respondent):
 
-Educational Level: Higher education levels corresponded to greater scientific knowledge.
+- F value: 37.04, Pr(>F): 2.38e-16.
+- Explanation: The high significance suggests considerable differences in scientific knowledge across racial groups. This may reflect disparities in access to quality education and cultural or societal influences.
 
-Sexual Orientation: Variations in scientific literacy were evident across different sexual orientations.
+Income Levels (Respondents income):
 
-Income Levels: Respondents' income levels significantly influenced their scientific literacy.
+- F value: 7.802, Pr(>F): 4.87e-16.
+- Explanation: This significant correlation indicates that higher income may facilitate better access to educational resources, leading to improved scientific literacy.
+
+Marital Status (Marital status):
+
+- F value: 11.74, Pr(>F): 4.12e-11.
+- Explanation: Marital status appears to influence scientific knowledge, potentially due to changes in time availability and life priorities that affect learning opportunities and educational engagement.
+
+Respondent's Sex (Respondents sex):
+
+- F value: 36.49, Pr(>F): 2.03e-09.
+- Explanation: The significant difference in scientific literacy between males and females might be attributed to gender-specific educational experiences, societal expectations, or differences in opportunities and encouragement to pursue science education.
+
+Number of Children (Number of children):
+
+- F value: 5.971, Pr(>F): 3.27e-08.
+- Explanation: Having more children is associated with differences in scientific knowledge, possibly due to time constraints or shifting priorities that impact continuous scientific learning.
+
+Sexual Orientation (Sexual orientation):
+
+- F value: 5.977, Pr(>F): 1.8e-05.
+- Explanation: The variation in scientific literacy among different sexual orientations suggests the influence of social dynamics, educational inclusivity, and possibly differing experiences with science education.
+
+Age of Respondent (Age of respondent):
+
+- F value: 1.589, Pr(>F): 0.00164.
+- Explanation: The age of respondents influences scientific literacy to a lesser extent than other factors. This could reflect generational differences in educational exposure to science or the evolving nature of science education over time.
+
+Home Ownership (Does r own or rent home?):
+
+- F value: 2.577, Pr(>F): 0.025.
+- Explanation: The impact of home ownership, though less pronounced, indicates underlying socioeconomic factors. Homeownership may be a proxy for financial stability, which could influence access to educational resources.
 
 ## Conclusions
 
-The analysis confidently suggests that demographic factors, namely sex, race, number of children, education, sexual orientation, and income level, play a significant role in determining the level of scientific knowledge among individuals. These insights are crucial for formulating targeted educational strategies and public awareness campaigns to enhance scientific literacy across diverse demographic segments.
+This analysis has clearly shown that demographic factors significantly shape scientific literacy. The level of education, race, and income emerge as particularly influential, indicating the importance of access to quality education and the impact of socioeconomic factors on scientific understanding. Sex, marital status, and the number of children also play notable roles, reflecting how different life experiences and responsibilities can affect scientific knowledge. Additionally, variations in scientific literacy across different sexual orientations and age groups highlight the need for inclusive and diverse educational environments. These findings emphasize the importance of developing tailored educational strategies and public awareness campaigns that consider these diverse demographic influences. By addressing these factors, we can work towards enhancing scientific literacy across all segments of society, ensuring that everyone has the opportunity to engage with and understand
