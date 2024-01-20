@@ -165,7 +165,7 @@ The methodology involves analyzing each demographic factor's influence on the re
 
 Educational Level (Highest year of school completed):
 
-- F value: 16.02, Pr(>F): <2e-16.
+- F value: 58.58, Pr(>F): <2e-16.
 - Explanation: This strong statistical significance indicates that educational attainment is a key factor in scientific literacy. Higher education levels likely provide more comprehensive exposure to science, leading to better understanding.
 
 Race of Respondent (Race of respondent):
@@ -183,6 +183,11 @@ Marital Status (Marital status):
 - F value: 11.74, Pr(>F): 4.12e-11.
 - Explanation: Marital status appears to influence scientific knowledge, potentially due to changes in time availability and life priorities that affect learning opportunities and educational engagement.
 
+Age of Respondent (Age of respondent):
+
+- F value: 12.38 Pr(>F): 7.14e-10.
+- Explanation: The age of respondents influences scientific literacy to a lesser extent than other factors. This could reflect generational differences in educational exposure to science or the evolving nature of science education over time.
+
 Respondent's Sex (Respondents sex):
 
 - F value: 36.49, Pr(>F): 2.03e-09.
@@ -190,18 +195,13 @@ Respondent's Sex (Respondents sex):
 
 Number of Children (Number of children):
 
-- F value: 5.971, Pr(>F): 3.27e-08.
+- F value: 10.56, Pr(>F): 2.04e-08.
 - Explanation: Having more children is associated with differences in scientific knowledge, possibly due to time constraints or shifting priorities that impact continuous scientific learning.
 
 Sexual Orientation (Sexual orientation):
 
 - F value: 5.977, Pr(>F): 1.8e-05.
 - Explanation: The variation in scientific literacy among different sexual orientations suggests the influence of social dynamics, educational inclusivity, and possibly differing experiences with science education.
-
-Age of Respondent (Age of respondent):
-
-- F value: 1.589, Pr(>F): 0.00164.
-- Explanation: The age of respondents influences scientific literacy to a lesser extent than other factors. This could reflect generational differences in educational exposure to science or the evolving nature of science education over time.
 
 Home Ownership (Does r own or rent home?):
 
