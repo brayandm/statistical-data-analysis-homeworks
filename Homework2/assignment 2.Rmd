@@ -71,6 +71,26 @@ hist(data_2014$correct_answers,
      col = "blue")
 ```
 
+# Transform cuantitative variables categorical variables
+```{r}
+cuantitative_variables <- c("Age of respondent",
+                            "Number of children",
+                            "Highest year of school completed")
+
+for (var in cuantitative_variables) {
+  data_2014[[var]] <- as.numeric(data_2014[[var]])
+}
+
+number_of_bins <- 5
+
+for (var in cuantitative_variables) {
+  data_2014[[var]] <- cut(data_2014[[var]],
+                          breaks = number_of_bins,
+                          labels = c("Very Low", "Low",
+                                     "Medium", "High", "Very High"))
+}
+```
+
 # ANOVA test for demographic variables
 ```{r}
 
