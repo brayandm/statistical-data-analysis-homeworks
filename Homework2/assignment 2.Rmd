@@ -113,7 +113,7 @@ for (var in demographic_variables) {
 
   print(summary(anova_result))
 
-  par(mgp = c(3, 1, 0), cex.axis = 0.5)
+  par(mgp = c(3, 1, 0), cex.axis = 0.6)
 
   boxplot(data_2014$correct_answers ~ data_2014[[var]],
           main = paste("Boxplot of Correct Answers by", var),
@@ -141,10 +141,14 @@ for (var in significant_variables) {
 
   aggregate_data <- aggregate(correct_answers ~ data_2014[[var]],
                               data = data_2014, mean)
+
+  par(mgp = c(3, 1, 0), cex.axis = 0.6)
+
   barplot(aggregate_data$correct_answers,
           names.arg = aggregate_data[, 1],
           main = paste("Bar Plot of Mean Correct Answers by", var),
-          xlab = var, ylab = "Mean Number of Correct Answers", col = "coral")
+          xlab = "", ylab = "Mean Number of Correct Answers", col = "coral",
+          las = 2)
 }
 ```
 
