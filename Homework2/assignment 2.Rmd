@@ -115,7 +115,14 @@ demographic_variables <- c("Respondents sex",
 significant_variables <- c()
 
 for (var in demographic_variables) {
-  anova_result <- aov(correct_answers ~ data_2014[[var]], data = data_2014)
+
+  clean_data <- data_2014[complete.cases(data_2014[[var]]), ]
+
+  clean_data <- clean_data[!clean_data[[var]] %in%
+                             c("Not applicable", "Refused",
+                               "Don't know", "No answer"), ]
+
+  anova_result <- aov(correct_answers ~ clean_data[[var]], data = clean_data)
 
   print(paste("ANOVA for", var))
 
@@ -123,7 +130,7 @@ for (var in demographic_variables) {
 
   par(mgp = c(3, 1, 0), cex.axis = 0.6)
 
-  boxplot(data_2014$correct_answers ~ data_2014[[var]],
+  boxplot(clean_data$correct_answers ~ clean_data[[var]],
           main = paste("Boxplot of Correct Answers by", var),
           xlab = "", ylab = "Number of Correct Answers", col = "lightgreen",
           las = 2)
@@ -139,7 +146,14 @@ for (var in demographic_variables) {
 ```{r}
 
 for (var in significant_variables) {
-  anova_result <- aov(correct_answers ~ data_2014[[var]], data = data_2014)
+
+  clean_data <- data_2014[complete.cases(data_2014[[var]]), ]
+
+  clean_data <- clean_data[!clean_data[[var]] %in%
+                             c("Not applicable", "Refused",
+                               "Don't know", "No answer"), ]
+
+  anova_result <- aov(correct_answers ~ clean_data[[var]], data = clean_data)
 
   posthoc_result <- TukeyHSD(anova_result)
 
@@ -147,8 +161,8 @@ for (var in significant_variables) {
 
   print(posthoc_result)
 
-  aggregate_data <- aggregate(correct_answers ~ data_2014[[var]],
-                              data = data_2014, mean)
+  aggregate_data <- aggregate(correct_answers ~ clean_data[[var]],
+                              data = clean_data, mean)
 
   par(mgp = c(3, 1, 0), cex.axis = 0.6)
 
