@@ -1,0 +1,22 @@
+---
+title: "Linear Regression"
+author: "Brayan Duran Medina"
+output: html_document
+---
+
+# 0) Importing libraries
+```{r}
+library(readxl)
+library(stats)
+```
+
+# 1) Plot the data, analyze if predictors need to be transform, check for outliers
+
+## Read description and data from Excel file
+```{r}
+description <- read_excel("diamonds.xlsx", sheet = "description")
+data <- read_excel("diamonds.xlsx", sheet = "data")
+
+print(description)
+print(data)
+```
