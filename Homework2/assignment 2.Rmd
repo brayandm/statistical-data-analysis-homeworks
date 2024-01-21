@@ -102,6 +102,12 @@ for (var in cuantitative_variables) {
 # ANOVA test for demographic variables
 ```{r}
 
+ordered_income_labels <- c("Lt $1000", "$1000 to 2999", "$3000 to 3999",
+                           "$4000 to 4999", "$5000 to 5999", "$6000 to 6999",
+                           "$7000 to 7999", "$8000 to 9999", "$10000 - 14999",
+                           "$15000 - 19999", "$20000 - 24999", "$25000 or more")
+
+
 demographic_variables <- c("Respondents sex",
                            "Age of respondent",
                            "Race of respondent",
@@ -127,6 +133,11 @@ for (var in demographic_variables) {
   print(paste("ANOVA for", var))
 
   print(summary(anova_result))
+
+  if (var == "Respondents income") {
+    clean_data$`Respondents income` <- factor(clean_data$`Respondents income`,
+                                              levels = ordered_income_labels)
+  }
 
   par(mgp = c(3, 1, 0), cex.axis = 0.6)
 
@@ -160,6 +171,11 @@ for (var in significant_variables) {
   print(paste("Post-Hoc Test for", var))
 
   print(posthoc_result)
+
+  if (var == "Respondents income") {
+    clean_data$`Respondents income` <- factor(clean_data$`Respondents income`,
+                                              levels = ordered_income_labels)
+  }
 
   aggregate_data <- aggregate(correct_answers ~ clean_data[[var]],
                               data = clean_data, mean)
