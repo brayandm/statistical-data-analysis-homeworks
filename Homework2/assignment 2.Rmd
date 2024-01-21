@@ -41,6 +41,14 @@ science_questions <- colnames(data_2014)[c(42:52)]
 science_questions
 ```
 
+# Transforming data
+```{r}
+data_2014$"Number of children" <-
+  ifelse(data_2014$"Number of children" == "Eight or more",
+         8, data_2014$"Number of children")
+```
+
+
 # Remove people that did not answer any Science question
 ```{r}
 data_2014 <- data_2014[rowSums(data_2014[science_questions] == "Not applicable")
