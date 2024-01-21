@@ -113,9 +113,12 @@ for (var in demographic_variables) {
 
   print(summary(anova_result))
 
+  par(mgp = c(3, 1, 0), cex.axis = 0.5)
+
   boxplot(data_2014$correct_answers ~ data_2014[[var]],
           main = paste("Boxplot of Correct Answers by", var),
-          xlab = var, ylab = "Number of Correct Answers", col = "lightgreen")
+          xlab = "", ylab = "Number of Correct Answers", col = "lightgreen",
+          las = 2)
 
   if (summary(anova_result)[[1]][["Pr(>F)"]][1] < 0.05) {
 
