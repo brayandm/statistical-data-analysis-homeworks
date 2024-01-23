@@ -26,6 +26,16 @@ print(description)
 print(data)
 ```
 
+## Add diamond classification column
+```{r}
+data <- data %>%
+  mutate(diamond_classification = case_when(
+    carat < 0.3 ~ "small",
+    carat >= 0.3 & carat < 1 ~ "medium",
+    carat >= 1 ~ "large"
+  ))
+```
+
 ## Columns names
 ```{r}
 column_names <- names(data)
@@ -68,6 +78,13 @@ data <- data %>%
     clarity == "IF" ~ 8,
   ))
 
+data <- data %>%
+  mutate(diamond_classification = case_when(
+    diamond_classification == "small" ~ 1,
+    diamond_classification == "medium" ~ 2,
+    diamond_classification == "large" ~ 3
+  ))
+
 for (var in column_names) {
   data[[var]] <- as.numeric(data[[var]])
 }
@@ -94,16 +111,16 @@ for (var in column_names) {
 }
 ```
 
-# 2) Create the model
+# 2) Create the first model
 ```{r}
 data <- data.frame(lapply(data, as.numeric))
 
-lm_model <- lm(price ~ ., data = data)
+lm_model1 <- lm(price ~ . - diamond_classification, data = data)
 ```
 
 # 3) Plot the residuals
 ```{r}
-residuals_data <- residuals(lm_model)
+residuals_data <- residuals(lm_model1)
 
 plot(residuals_data, main = "Residuals of the model")
 abline(h = 0, col = "red")
@@ -159,33 +176,38 @@ for (var in names(data)) {
 
 # 6) Breusch-Pagan test for heteroscedasticity
 ```{r}
-bptest_result <- bptest(lm_model)
+bptest_result <- bptest(lm_model1)
 print(bptest_result)
 ```
 
 # 7) Calculate Cook's distance
 ```{r}
-cooks_distances <- cooks.distance(lm_model)
+cooks_distances <- cooks.distance(lm_model1)
 
 plot(cooks_distances, type = "h", main = "Distancias de Cook",
      ylab = "Distancia de Cook", xlab = "Índice de Observación")
 
-abline(h = 4 / (nrow(data) - length(coef(lm_model))), col = "red")
+abline(h = 4 / (nrow(data) - length(coef(lm_model1))), col = "red")
 ```
 
-## Add diamond classification column
+# 8) Create second lineal model
 ```{r}
-data <- data %>%
-  mutate(diamond_classification = case_when(
-    carat < 0.3 ~ "small",
-    carat >= 0.3 & carat < 1 ~ "medium",
-    carat >= 1 ~ "large"
-  ))
+data <- data.frame(lapply(data, as.numeric))
 
-data <- data %>%
-  mutate(diamond_classification = case_when(
-    diamond_classification == "small" ~ 1,
-    diamond_classification == "medium" ~ 2,
-    diamond_classification == "large" ~ 3
-  ))
+lm_model2 <- lm(price ~ . - carat, data = data)
+```
+
+# 9) Plot the residuals
+```{r}
+residuals_data <- residuals(lm_model2)
+
+plot(residuals_data, main = "Residuals of the model")
+abline(h = 0, col = "red")
+```
+
+# 10) Davidson-MacKinnon J test to compare models
+```{r}
+jtest_result <- jtest(lm_model1, lm_model2)
+
+print(jtest_result)
 ```
