@@ -172,3 +172,20 @@ plot(cooks_distances, type = "h", main = "Distancias de Cook",
 
 abline(h = 4 / (nrow(data) - length(coef(lm_model))), col = "red")
 ```
+
+## Add diamond classification column
+```{r}
+data <- data %>%
+  mutate(diamond_classification = case_when(
+    carat < 0.3 ~ "small",
+    carat >= 0.3 & carat < 1 ~ "medium",
+    carat >= 1 ~ "large"
+  ))
+
+data <- data %>%
+  mutate(diamond_classification = case_when(
+    diamond_classification == "small" ~ 1,
+    diamond_classification == "medium" ~ 2,
+    diamond_classification == "large" ~ 3
+  ))
+```
