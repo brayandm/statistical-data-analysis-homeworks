@@ -182,13 +182,21 @@ for (var in names(data)) {
 lm_model1 <- lm(price ~ . - diamond_classification, data = data_with_boxcox)
 ```
 
-# 6) Breusch-Pagan test for heteroscedasticity
+# 6) Plot the residuals after Box-Cox transformation
+```{r}
+residuals_data <- residuals(lm_model1)
+
+plot(residuals_data, main = "Residuals of the model")
+abline(h = 0, col = "red")
+```
+
+# 7) Breusch-Pagan test for heteroscedasticity
 ```{r}
 bptest_result <- bptest(lm_model1)
 print(bptest_result)
 ```
 
-# 7) Calculate Cook's distance
+# 8) Calculate Cook's distance
 ```{r}
 cooks_distances <- cooks.distance(lm_model1)
 
@@ -198,14 +206,14 @@ plot(cooks_distances, type = "h", main = "Distancias de Cook",
 abline(h = 4 / (nrow(data) - length(coef(lm_model1))), col = "red")
 ```
 
-# 8) Create second lineal model
+# 9) Create second lineal model
 ```{r}
 data <- data.frame(lapply(data, as.numeric))
 
 lm_model2 <- lm(price ~ . - carat, data = data)
 ```
 
-# 9) Plot the residuals
+# 10) Plot the residuals
 ```{r}
 residuals_data <- residuals(lm_model2)
 
@@ -213,7 +221,7 @@ plot(residuals_data, main = "Residuals of the model")
 abline(h = 0, col = "red")
 ```
 
-# 10) Davidson-MacKinnon J test to compare models
+# 11) Davidson-MacKinnon J test to compare models
 ```{r}
 jtest_result <- jtest(lm_model1, lm_model2)
 
