@@ -11,6 +11,7 @@ library(dplyr)
 library(ggplot2)
 library(GGally)
 library(ggcorrplot)
+library(MASS)
 ```
 
 # 1) Plot the data, analyze if predictors need to be transform, check for outliers
@@ -85,9 +86,16 @@ cor_mat <- cor(data)
 ggcorrplot(cor_mat)
 ```
 
-### Check for outliers using boxplot
+## Check for outliers using boxplot
 ```{r}
 for (var in column_names) {
   boxplot(data[[var]], main = var)
+}
+```
+
+# 2) Box-Cox transformation
+```{r}
+for (var in column_names) {
+  data[[var]] <- boxcox(data[[var]], lambda = 0)
 }
 ```
