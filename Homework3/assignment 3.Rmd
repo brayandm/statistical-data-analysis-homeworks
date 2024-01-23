@@ -118,7 +118,7 @@ data <- data.frame(lapply(data, as.numeric))
 lm_model1 <- lm(price ~ . - diamond_classification, data = data)
 ```
 
-# 3) Plot the residuals
+# 3) Plot the residuals of the first model
 ```{r}
 residuals_data <- residuals(lm_model1)
 
@@ -126,7 +126,7 @@ plot(residuals_data, main = "Residuals of the model 1")
 abline(h = 0, col = "red")
 ```
 
-# 4) Kolmogorov-Smirnov test
+# 4) Kolmogorov-Smirnov test for first model
 ```{r}
 residuals_data_standardized <- scale(residuals_data)
 ks_test_residuals <- ks.test(residuals_data_standardized, "pnorm")
@@ -151,7 +151,7 @@ for (var in names(data)) {
 ks_results
 ```
 
-# 5) Box-Cox Transformation
+# 5) Box-Cox Transformation for first model
 
 ## Apply Box-Cox transformation to variables with p-value < 0.05
 ```{r}
@@ -182,7 +182,7 @@ for (var in names(data)) {
 lm_model1 <- lm(price ~ . - diamond_classification, data = data_with_boxcox)
 ```
 
-# 6) Plot the residuals after Box-Cox transformation
+# 6) Plot the residuals after Box-Cox transformation for first model
 ```{r}
 residuals_data <- residuals(lm_model1)
 
@@ -190,13 +190,13 @@ plot(residuals_data, main = "Residuals of the model")
 abline(h = 0, col = "red")
 ```
 
-# 7) Breusch-Pagan test for heteroscedasticity
+# 7) Breusch-Pagan test for heteroscedasticity for first model
 ```{r}
 bptest_result <- bptest(lm_model1)
 print(bptest_result)
 ```
 
-# 8) Calculate Cook's distance
+# 8) Calculate Cook's distance for first model
 ```{r}
 cooks_distances <- cooks.distance(lm_model1)
 
@@ -213,7 +213,7 @@ data <- data.frame(lapply(data, as.numeric))
 lm_model2 <- lm(price ~ . - carat, data = data)
 ```
 
-# 10) Plot the residuals
+# 10) Plot the residuals of the second model
 ```{r}
 residuals_data <- residuals(lm_model2)
 
@@ -221,7 +221,7 @@ plot(residuals_data, main = "Residuals of the model 2")
 abline(h = 0, col = "red")
 ```
 
-# 11) Kolmogorov-Smirnov test
+# 11) Kolmogorov-Smirnov test for second model
 ```{r}
 residuals_data_standardized <- scale(residuals_data)
 ks_test_residuals <- ks.test(residuals_data_standardized, "pnorm")
@@ -246,7 +246,7 @@ for (var in names(data)) {
 ks_results
 ```
 
-# 12) Box-Cox Transformation
+# 12) Box-Cox Transformation for second model
 
 ## Apply Box-Cox transformation to variables with p-value < 0.05
 ```{r}
@@ -277,7 +277,7 @@ for (var in names(data)) {
 lm_model2 <- lm(price ~ . - diamond_classification, data = data_with_boxcox)
 ```
 
-# 13) Plot the residuals after Box-Cox transformation
+# 13) Plot the residuals after Box-Cox transformation for second model
 ```{r}
 residuals_data <- residuals(lm_model2)
 
@@ -285,13 +285,13 @@ plot(residuals_data, main = "Residuals of the model")
 abline(h = 0, col = "red")
 ```
 
-# 14) Breusch-Pagan test for heteroscedasticity
+# 14) Breusch-Pagan test for heteroscedasticity for second model
 ```{r}
 bptest_result <- bptest(lm_model2)
 print(bptest_result)
 ```
 
-# 15) Calculate Cook's distance
+# 15) Calculate Cook's distance for second model
 ```{r}
 cooks_distances <- cooks.distance(lm_model2)
 
