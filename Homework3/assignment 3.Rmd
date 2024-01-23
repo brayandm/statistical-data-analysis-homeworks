@@ -7,7 +7,7 @@ output: html_document
 # 0) Importing libraries
 ```{r}
 library(readxl)
-library(stats)
+library(dplyr)
 ```
 
 # 1) Plot the data, analyze if predictors need to be transform, check for outliers
@@ -19,4 +19,53 @@ data <- read_excel("diamonds.xlsx", sheet = "data")
 
 print(description)
 print(data)
+```
+
+## Columns names
+```{r}
+column_names <- names(data)
+
+print(column_names)
+```
+
+## Tranform data from string to numeric
+```{r}
+
+data <- data %>%
+  mutate(cut = case_when(
+    cut == "Fair" ~ 1,
+    cut == "Good" ~ 2,
+    cut == "Very Good" ~ 3,
+    cut == "Premium" ~ 4,
+    cut == "Ideal" ~ 5,
+  ))
+
+data <- data %>%
+  mutate(color = case_when(
+    color == "J" ~ 1,
+    color == "I" ~ 2,
+    color == "H" ~ 3,
+    color == "G" ~ 4,
+    color == "F" ~ 5,
+    color == "E" ~ 6,
+    color == "D" ~ 7,
+  ))
+
+data <- data %>%
+  mutate(clarity = case_when(
+    clarity == "I1" ~ 1,
+    clarity == "SI1" ~ 2,
+    clarity == "SI2" ~ 3,
+    clarity == "VS1" ~ 4,
+    clarity == "VS2" ~ 5,
+    clarity == "VVS1" ~ 6,
+    clarity == "VVS2" ~ 7,
+    clarity == "IF" ~ 8,
+  ))
+
+for (var in column_names) {
+  data[[var]] <- as.numeric(data[[var]])
+}
+
+data
 ```
