@@ -8,6 +8,9 @@ output: html_document
 ```{r}
 library(readxl)
 library(dplyr)
+library(ggplot2)
+library(GGally)
+library(ggcorrplot)
 ```
 
 # 1) Plot the data, analyze if predictors need to be transform, check for outliers
@@ -68,4 +71,16 @@ for (var in column_names) {
 }
 
 data
+```
+
+## Make Pairplot
+```{r}
+# ggpairs(data, columns = c("carat", "cut", "color", "clarity",
+#                           "depth", "table", "price", "x", "y", "z"))
+```
+
+## Make Correlation Plot
+```{r}
+cor_mat <- cor(data)
+ggcorrplot(cor_mat)
 ```
