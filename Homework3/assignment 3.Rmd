@@ -274,7 +274,7 @@ for (var in names(data)) {
 
 ## Update the second model with the data transformed
 ```{r}
-lm_model2 <- lm(price ~ . - diamond_classification, data = data_with_boxcox)
+lm_model2 <- lm(price ~ . - carat, data = data_with_boxcox)
 ```
 
 # 13) Plot the residuals after Box-Cox transformation for second model
