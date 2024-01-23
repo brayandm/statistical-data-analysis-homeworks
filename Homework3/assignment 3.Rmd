@@ -128,8 +128,6 @@ abline(h = 0, col = "red")
 
 # 4) Kolmogorov-Smirnov test
 ```{r}
-library(ggplot2)
-
 residuals_data_standardized <- scale(residuals_data)
 ks_test_residuals <- ks.test(residuals_data_standardized, "pnorm")
 
@@ -154,7 +152,12 @@ ks_results
 ```
 
 # 5) Box-Cox Transformation
+
+## Apply Box-Cox transformation to variables with p-value < 0.05
 ```{r}
+
+data_with_boxcox <- data
+
 for (var in names(data)) {
   if (ks_results[[var]]$p.value < 0.05) {
     if (all(data[[var]] > 0)) {
@@ -163,7 +166,7 @@ for (var in names(data)) {
       bc_result <- boxcox(lm(fmla, data = data))
       lambda_optimal <- bc_result$x[which.max(bc_result$y)]
 
-      data[[paste(var, "boxcox", sep = "_")]] <-
+      data_with_boxcox[[var]] <-
         (data[[var]]^lambda_optimal - 1) / lambda_optimal
     } else {
       message(paste("The variable",
@@ -172,6 +175,11 @@ for (var in names(data)) {
     }
   }
 }
+```
+
+## Update the first model with the data transformed
+```{r}
+lm_model1 <- lm(price ~ . - diamond_classification, data = data_with_boxcox)
 ```
 
 # 6) Breusch-Pagan test for heteroscedasticity
