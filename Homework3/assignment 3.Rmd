@@ -84,3 +84,10 @@ data
 cor_mat <- cor(data)
 ggcorrplot(cor_mat)
 ```
+
+### Check for outliers using boxplot
+```{r}
+for (var in column_names) {
+  boxplot(data[[var]], main = var)
+}
+```
