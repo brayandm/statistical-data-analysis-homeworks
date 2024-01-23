@@ -122,7 +122,7 @@ lm_model1 <- lm(price ~ . - diamond_classification, data = data)
 ```{r}
 residuals_data <- residuals(lm_model1)
 
-plot(residuals_data, main = "Residuals of the model")
+plot(residuals_data, main = "Residuals of the model 1")
 abline(h = 0, col = "red")
 ```
 
@@ -200,8 +200,8 @@ print(bptest_result)
 ```{r}
 cooks_distances <- cooks.distance(lm_model1)
 
-plot(cooks_distances, type = "h", main = "Distancias de Cook",
-     ylab = "Distancia de Cook", xlab = "Índice de Observación")
+plot(cooks_distances, type = "h", main = "Cook's distances",
+     ylab = "Cook's distance", xlab = "Observation Index")
 
 abline(h = 4 / (nrow(data) - length(coef(lm_model1))), col = "red")
 ```
@@ -217,11 +217,91 @@ lm_model2 <- lm(price ~ . - carat, data = data)
 ```{r}
 residuals_data <- residuals(lm_model2)
 
+plot(residuals_data, main = "Residuals of the model 2")
+abline(h = 0, col = "red")
+```
+
+# 11) Kolmogorov-Smirnov test
+```{r}
+residuals_data_standardized <- scale(residuals_data)
+ks_test_residuals <- ks.test(residuals_data_standardized, "pnorm")
+
+print(ks_test_residuals)
+
+data <- data.frame(lapply(data, as.numeric))
+
+ks_results <- list()
+
+for (var in names(data)) {
+  p <- ggplot(data, aes_string(x = var)) +
+    geom_histogram(bins = 30, fill = "blue", color = "black") +
+    ggtitle(paste("Histogram of", var))
+  print(p)
+
+  data_standardized <- scale(data[[var]])
+
+  ks_results[[var]] <- ks.test(data_standardized, "pnorm")
+}
+
+ks_results
+```
+
+# 12) Box-Cox Transformation
+
+## Apply Box-Cox transformation to variables with p-value < 0.05
+```{r}
+
+data_with_boxcox <- data
+
+for (var in names(data)) {
+  if (ks_results[[var]]$p.value < 0.05) {
+    if (all(data[[var]] > 0)) {
+      fmla <- as.formula(paste(var, "~ ."))
+
+      bc_result <- boxcox(lm(fmla, data = data))
+      lambda_optimal <- bc_result$x[which.max(bc_result$y)]
+
+      data_with_boxcox[[var]] <-
+        (data[[var]]^lambda_optimal - 1) / lambda_optimal
+    } else {
+      message(paste("The variable",
+                    var,
+                    "contains non-positivevalues and Box-Cox was not applied."))
+    }
+  }
+}
+```
+
+## Update the second model with the data transformed
+```{r}
+lm_model2 <- lm(price ~ . - diamond_classification, data = data_with_boxcox)
+```
+
+# 13) Plot the residuals after Box-Cox transformation
+```{r}
+residuals_data <- residuals(lm_model2)
+
 plot(residuals_data, main = "Residuals of the model")
 abline(h = 0, col = "red")
 ```
 
-# 11) Davidson-MacKinnon J test to compare models
+# 14) Breusch-Pagan test for heteroscedasticity
+```{r}
+bptest_result <- bptest(lm_model2)
+print(bptest_result)
+```
+
+# 15) Calculate Cook's distance
+```{r}
+cooks_distances <- cooks.distance(lm_model2)
+
+plot(cooks_distances, type = "h", main = "Cook's distances",
+     ylab = "Cook's distance", xlab = "Observation Index")
+
+abline(h = 4 / (nrow(data) - length(coef(lm_model2))), col = "red")
+```
+
+# 16) Davidson-MacKinnon J test to compare models
 ```{r}
 jtest_result <- jtest(lm_model1, lm_model2)
 
