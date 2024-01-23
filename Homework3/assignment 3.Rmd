@@ -12,6 +12,7 @@ library(ggplot2)
 library(GGally)
 library(ggcorrplot)
 library(MASS)
+library(lmtest)
 ```
 
 # 1) Plot the data, analyze if predictors need to be transform, check for outliers
@@ -154,4 +155,20 @@ for (var in names(data)) {
     }
   }
 }
+```
+
+# 6) Breusch-Pagan test for heteroscedasticity
+```{r}
+bptest_result <- bptest(lm_model)
+print(bptest_result)
+```
+
+# 7) Calculate Cook's distance
+```{r}
+cooks_distances <- cooks.distance(lm_model)
+
+plot(cooks_distances, type = "h", main = "Distancias de Cook",
+     ylab = "Distancia de Cook", xlab = "Índice de Observación")
+
+abline(h = 4 / (nrow(data) - length(coef(lm_model))), col = "red")
 ```
