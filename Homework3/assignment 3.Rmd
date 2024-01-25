@@ -235,6 +235,51 @@ plot(data$price_transformed, cooks_distances,
 abline(h = 4 / (nrow(data) - length(coef(lm_model1))), col = "red")
 ```
 
+### Notes:
+We can note that there are some high values of Cook's distance that could affect the model, so let's try
+to remove them above the threshold of 0.05 (chosen by visual inspection)
+
+# Remove values with Cook's distance above 0.05
+```{r}
+data <- data[-which(cooks_distances > 0.05), ]
+```
+
+# Update the first model with the data without values with Cook's distance above 0.05
+```{r}
+lm_model1 <- lm(price_transformed ~ . - diamond_classification - price,
+                data = data)
+```
+
+# Plot the residuals after removing values with Cook's distance above 0.05
+```{r}
+residuals_data_after_cook <- exp(predict(lm_model1)) - data$price
+
+qqnorm(residuals(lm_model1))
+qqline(residuals(lm_model1), col = "red")
+```
+
+# Compare the residuals before and after removing values with Cook's distance above 0.05
+```{r, fig.width=10, fig.height=10}
+mse_original <- mean(residuals_data_box_cox^2)
+rmse_original <- sqrt(mse_original)
+mae_original <- mean(abs(residuals_data_box_cox))
+
+mse_after_cook <- mean(residuals_data_after_cook^2)
+rmse_after_cook <- sqrt(mse_after_cook)
+mae_after_cook <- mean(abs(residuals_data_after_cook))
+
+print(paste("MSE original:", mse_original))
+print(paste("RMSE original:", rmse_original))
+print(paste("MAE original:", mae_original))
+print(paste("MSE after Cook:", mse_after_cook))
+print(paste("RMSE after Cook:", rmse_after_cook))
+print(paste("MAE after Cook:", mae_after_cook))
+```
+
+### Notes:
+We can notice that the model improved after removing values with Cook's distance above 0.05, the RMSE, MSE and MAE decreased.
+So let's keep this new data without values with Cook's distance above 0.05 for the next model.
+
 # Create second lineal model
 ```{r}
 data <- data.frame(lapply(data, as.numeric))
@@ -254,23 +299,6 @@ qqline(residuals(lm_model2), col = "red")
 ```{r}
 bptest_result <- bptest(lm_model2)
 print(bptest_result)
-```
-
-# Calculate Cook's distance for second model
-```{r, fig.width=10}
-cooks_distances <- cooks.distance(lm_model2)
-
-par(mfrow = c(1, 2))
-
-plot(fitted(lm_model2), cooks_distances,
-     xlab = "Fitted Values", ylab = "Cook's Distance",
-     main = "Cook's Distance vs Fitted Values", col = "blue", pch = 19)
-abline(h = 4 / (nrow(data) - length(coef(lm_model2))), col = "red")
-
-plot(data$price_transformed, cooks_distances,
-     xlab = "Transformed Values", ylab = "Cook's Distance",
-     main = "Cook's Distance vs Transformed Values", col = "blue", pch = 19)
-abline(h = 4 / (nrow(data) - length(coef(lm_model2))), col = "red")
 ```
 
 # Davidson-MacKinnon J test to compare models
