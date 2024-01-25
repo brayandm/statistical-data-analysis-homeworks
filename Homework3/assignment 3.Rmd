@@ -63,21 +63,25 @@ print(names(data))
 ```
 
 ## Make Pairplot
-```{r}
+```{r, fig.width=10, fig.height=10}
 # ggpairs(data, columns = c("price", "carat", "depth", "table", "x", "y", "z"))
 ```
 
 ## Make Correlation Plot
-```{r}
+```{r, fig.width=10, fig.height=10}
 cor_mat <- cor(data[sapply(data, is.numeric)])
 ggcorrplot(cor_mat)
 ```
 
 ## Check for outliers using boxplot
-```{r}
+```{r, fig.width=10, fig.height=10}
+par(mfrow = c(3, 4))
+
 for (var in column_names) {
   boxplot(data[[var]], main = var)
 }
+
+par(mfrow = c(1, 1))
 ```
 
 # 2) Create the first model
