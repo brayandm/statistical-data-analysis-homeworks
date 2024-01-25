@@ -47,54 +47,15 @@ print(column_names)
 ```{r}
 
 data <- data %>%
-  mutate(cut = factor(cut, levels = c("Fair",
-                                      "Good",
-                                      "Very Good",
-                                      "Premium",
-                                      "Ideal"))) %>%
-
-  mutate(color = factor(color, levels = c("J",
-                                          "I",
-                                          "H",
-                                          "G",
-                                          "F",
-                                          "E",
-                                          "D"))) %>%
-
-  mutate(clarity = factor(clarity, levels = c("I1",
-                                              "SI1",
-                                              "SI2",
-                                              "VS1",
-                                              "VS2",
-                                              "VVS1",
-                                              "VVS2",
-                                              "IF"))) %>%
-
-  mutate(diamond_classification =
-           factor(diamond_classification, levels = c("small",
-                                                     "medium",
-                                                     "large")))
-
-cut_dummies <- model.matrix(~ cut - 1, data)
-color_dummies <- model.matrix(~ color - 1, data)
-clarity_dummies <- model.matrix(~ clarity - 1, data)
-diamond_classification_dummies <-
-  model.matrix(~ diamond_classification - 1, data)
-
-cut_dummies <- cut_dummies[, -1]
-color_dummies <- color_dummies[, -1]
-clarity_dummies <- clarity_dummies[, -1]
-diamond_classification_dummies <- diamond_classification_dummies[, -1]
-
-data <- cbind(data, cut_dummies,
-              color_dummies,
-              clarity_dummies,
-              diamond_classification_dummies)
-
-data <- data[, !(names(data) %in% c("cut",
-                                    "color",
-                                    "clarity",
-                                    "diamond_classification"))]
+  mutate(cut = factor(cut, levels =
+                        c("Fair", "Good", "Very Good", "Premium", "Ideal")),
+         color = factor(color, levels =
+                          c("J", "I", "H", "G", "F", "E", "D")),
+         clarity = factor(clarity, levels =
+                            c("I1", "SI1", "SI2", "VS1",
+                              "VS2", "VVS1", "VVS2", "IF")),
+         diamond_classification = factor(diamond_classification, levels =
+                                           c("small", "medium", "large")))
 
 column_names <- names(data)
 
@@ -103,12 +64,12 @@ print(names(data))
 
 ## Make Pairplot
 ```{r}
-ggpairs(data, columns = c("price", "carat", "depth", "table", "x", "y", "z"))
+# ggpairs(data, columns = c("price", "carat", "depth", "table", "x", "y", "z"))
 ```
 
 ## Make Correlation Plot
 ```{r}
-cor_mat <- cor(data)
+cor_mat <- cor(data[sapply(data, is.numeric)])
 ggcorrplot(cor_mat)
 ```
 
@@ -123,8 +84,7 @@ for (var in column_names) {
 ```{r}
 data <- data.frame(lapply(data, as.numeric))
 
-lm_model1 <- lm(price ~ . - diamond_classificationmedium
-                - diamond_classificationlarge, data = data)
+lm_model1 <- lm(price ~ . - diamond_classification, data = data)
 ```
 
 # 3) Plot the residuals of the first model
@@ -148,8 +108,7 @@ data$price_transformed_lm1 <- (data$price^lambda_optimal - 1) / lambda_optimal
 ```{r}
 data <- data.frame(lapply(data, as.numeric))
 
-lm_model1 <- lm(price_transformed_lm1 ~ . - diamond_classificationmedium
-                - diamond_classificationlarge - price,
+lm_model1 <- lm(price_transformed_lm1 ~ . - diamond_classification - price,
                 data = data)
 ```
 
