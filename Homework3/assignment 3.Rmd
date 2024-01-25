@@ -182,10 +182,28 @@ lm_model1 <- lm(price_transformed ~ . - diamond_classification - price,
 
 # Plot the residuals after Box-Cox transformation for first model
 ```{r}
-residuals_data <- residuals(lm_model1)
+residuals_data_box_cox <- exp(predict(lm_model1)) - data$price
 
 qqnorm(residuals(lm_model1))
 qqline(residuals(lm_model1), col = "red")
+```
+
+# Compare the residuals before and after Box-Cox transformation for first model
+```{r, fig.width=10, fig.height=10}
+mse_original <- mean(residuals_data^2)
+rmse_original <- sqrt(mse_original)
+mae_original <- mean(abs(residuals_data))
+
+mse_box_cox <- mean(residuals_data_box_cox^2)
+rmse_box_cox <- sqrt(mse_box_cox)
+mae_box_cox <- mean(abs(residuals_data_box_cox))
+
+print(paste("MSE original:", mse_original))
+print(paste("RMSE original:", rmse_original))
+print(paste("MAE original:", mae_original))
+print(paste("MSE Box-Cox:", mse_box_cox))
+print(paste("RMSE Box-Cox:", rmse_box_cox))
+print(paste("MAE Box-Cox:", mae_box_cox))
 ```
 
 # Breusch-Pagan test for heteroscedasticity for first model
