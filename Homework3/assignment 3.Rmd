@@ -26,18 +26,6 @@ print(description)
 print(data)
 ```
 
-## Make Pairplot
-```{r}
-ggpairs(data, columns = c("carat", "cut", "color", "clarity",
-                          "depth", "table", "price", "x", "y", "z"))
-```
-
-## Make Correlation Plot
-```{r}
-cor_mat <- cor(data)
-ggcorrplot(cor_mat)
-```
-
 ## Add diamond classification column
 ```{r}
 data <- data %>%
@@ -111,6 +99,17 @@ data <- data[, !(names(data) %in% c("cut",
 column_names <- names(data)
 
 print(names(data))
+```
+
+## Make Pairplot
+```{r}
+ggpairs(data, columns = names(data))
+```
+
+## Make Correlation Plot
+```{r}
+cor_mat <- cor(data)
+ggcorrplot(cor_mat)
 ```
 
 ## Check for outliers using boxplot
