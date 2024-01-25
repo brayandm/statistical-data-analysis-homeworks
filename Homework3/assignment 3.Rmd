@@ -243,11 +243,11 @@ print(jtest_result)
 # 17) Conclusion
 
 1. **Data Transformation and Analysis**:
-   - The data was successfully transformed from categorical to numeric, particularly for the variables 'cut', 'color', 'clarity', and a newly added 'diamond_classification'.
+   - The data was successfully transformed from categorical to numerical format using dummy variables.
    - Pairplots and correlation plots were generated, offering a visual understanding of the relationships between variables. Notably, boxplots were used to identify potential outliers.
 
 2. **Model Development and Evaluation**:
-   - Two linear regression models were constructed. The first model (`lm_model1`) excluded the 'diamond_classification' variable, while the second model (`lm_model2`) excluded 'carat'.
+   - Two linear regression models were constructed. The first model (`lm_model1`) excluded the 'diamond_classification' categories, while the second model (`lm_model2`) excluded 'carat'.
    - Residual analysis for both models revealed the distribution of errors. The Kolmogorov-Smirnov test indicated non-normal distribution of residuals for both models, as evidenced by significant p-values in all cases.
 
 3. **Box-Cox Transformation**:
