@@ -331,12 +331,17 @@ to the understanding of the price
 
 # Compare RMSE, MSE and MAE of the first and second model
 ```{r, fig.width=10, fig.height=10}
-mse_model1 <- mean(residuals(lm_model1)^2)
+
+residuals_model1 <- exp(predict(lm_model1)) - data$price
+residuals_model2 <- exp(predict(lm_model2)) - data$price
+
+mse_model1 <- mean(residuals_model1^2)
 rmse_model1 <- sqrt(mse_model1)
-mae_model1 <- mean(abs(residuals(lm_model1)))
-mse_model2 <- mean(residuals(lm_model2)^2)
+mae_model1 <- mean(abs(residuals_model1))
+
+mse_model2 <- mean(residuals_model2^2)
 rmse_model2 <- sqrt(mse_model2)
-mae_model2 <- mean(abs(residuals(lm_model2)))
+mae_model2 <- mean(abs(residuals_model2))
 
 print(paste("MSE model 1:", mse_model1))
 print(paste("RMSE model 1:", rmse_model1))
@@ -345,3 +350,15 @@ print(paste("MSE model 2:", mse_model2))
 print(paste("RMSE model 2:", rmse_model2))
 print(paste("MAE model 2:", mae_model2))
 ```
+
+### Notes:
+We can notice that the first model has a lower RMSE, MSE and MAE, so it is a better model, but with the J test
+we obtained that the feature 'diamond_classification' of the second model could be useful, this could be because
+the difference of importance between diamond sizes is not linear, so if we add this feature to the first model
+it is possible that the model improves a lot.
+
+# Conclusion
+
+The final conclusion is that the first model is the relatively the best, because it has a lower RMSE, MSE and MAE, but we could
+add the feature 'diamond_classification' to the first model to improve it a lot. This tell us that the actual diamond size is
+very important to predict the price, and the weight of the diamond is not enough.
