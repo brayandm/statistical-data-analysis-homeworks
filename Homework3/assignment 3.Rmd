@@ -164,6 +164,11 @@ lambda_optimal <- bc_result$x[which.max(bc_result$y)]
 data$price_transformed <- log(data$price)
 ```
 
+### Notes:
+We obtained a lambda value close to 0, indicating that a log transformation is appropriate for the target variable.
+In statistical analyses, especially in regression models, transforming the target variable can be crucial for meeting 
+the model assumptions, such as linearity, homoscedasticity (constant variance), and normality of residuals.
+
 # Update the first model with the data transformed
 ```{r}
 data <- data.frame(lapply(data, as.numeric))
