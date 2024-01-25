@@ -40,6 +40,8 @@ data <- data %>%
 ```{r}
 column_names <- names(data)
 
+numeric_columns <- column_names[sapply(data[column_names], is.numeric)]
+
 print(column_names)
 ```
 
@@ -94,11 +96,29 @@ lm_model1 <- lm(price ~ . - diamond_classification, data = data)
 ```
 
 # 3) Plot the residuals of the first model
-```{r}
+```{r, fig.width=10, fig.height=10, cache=TRUE}
 residuals_data <- residuals(lm_model1)
 
 qqnorm(residuals(lm_model1))
 qqline(residuals(lm_model1), col = "red")
+
+addtrend <- function(x, y) {
+  y <- y[order(x)]
+  x <- sort(x)
+  lines(x, predict(loess(y ~ x)), col = "red")
+}
+
+par(mfrow = c(3, 3))
+
+for (column in numeric_columns) {
+  plot(data[[column]], residuals(lm_model1),
+       xlab = column, ylab = "Residuals", pch = 19)
+
+  addtrend(data[[column]], residuals(lm_model1))
+  grid()
+}
+
+par(mfrow = c(1, 1))
 ```
 
 # 4) Box-Cox Transformation for first model

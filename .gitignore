@@ -1,2 +1,4 @@
 *.html
 .~lock.*.xlsx#
+*_cache
+*_files
