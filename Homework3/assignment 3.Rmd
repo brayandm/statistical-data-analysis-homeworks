@@ -75,6 +75,9 @@ cor_mat <- cor(data[sapply(data, is.numeric)])
 ggcorrplot(cor_mat)
 ```
 
+### Notes: 
+We can notice that variables 'x', 'y', 'z', 'carat' and 'price' are highly correlated, and 'depth' and 'table' inversely correlated
+
 ## Check for outliers using boxplot
 ```{r, fig.width=10, fig.height=10}
 par(mfrow = c(3, 3))
