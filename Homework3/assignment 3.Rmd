@@ -129,7 +129,7 @@ qqline(residuals(lm_model1), col = "red")
 # 4) Box-Cox Transformation for first model
 
 ```{r}
-bc_result <- boxcox(lm(price ~ . - diamond_classification, data = data))
+bc_result <- boxcox(lm_model1)
 lambda_optimal <- bc_result$x[which.max(bc_result$y)]
 
 data$price_transformed_lm1 <- (data$price^lambda_optimal - 1) / lambda_optimal
@@ -182,60 +182,22 @@ qqnorm(residuals(lm_model2))
 qqline(residuals(lm_model2), col = "red")
 ```
 
-# 11) Kolmogorov-Smirnov test for second model
+# 11) Box-Cox Transformation for second model
+
 ```{r}
-residuals_data_standardized <- scale(residuals_data)
-ks_test_residuals <- ks.test(residuals_data_standardized, "pnorm")
+bc_result <- boxcox(lm_model2)
+lambda_optimal <- bc_result$x[which.max(bc_result$y)]
 
-print(ks_test_residuals)
+data$price_transformed_lm2 <- (data$price^lambda_optimal - 1) / lambda_optimal
+```
 
+# 12) Update the second model with the data transformed
+```{r}
 data <- data.frame(lapply(data, as.numeric))
 
-ks_results <- list()
-
-for (var in names(data)) {
-  p <- ggplot(data, aes_string(x = var)) +
-    geom_histogram(bins = 30, fill = "blue", color = "black") +
-    ggtitle(paste("Histogram of", var))
-  print(p)
-
-  data_standardized <- scale(data[[var]])
-
-  ks_results[[var]] <- ks.test(data_standardized, "pnorm")
-}
-
-ks_results
-```
-
-# 12) Box-Cox Transformation for second model
-
-## Apply Box-Cox transformation to variables with p-value < 0.05
-```{r}
-
-data_with_boxcox <- data
-
-for (var in names(data)) {
-  if (ks_results[[var]]$p.value < 0.05) {
-    if (all(data[[var]] > 0)) {
-      fmla <- as.formula(paste(var, "~ ."))
-
-      bc_result <- boxcox(lm(fmla, data = data))
-      lambda_optimal <- bc_result$x[which.max(bc_result$y)]
-
-      data_with_boxcox[[var]] <-
-        (data[[var]]^lambda_optimal - 1) / lambda_optimal
-    } else {
-      message(paste("The variable",
-                    var,
-                    "contains non-positivevalues and Box-Cox was not applied."))
-    }
-  }
-}
-```
-
-## Update the second model with the data transformed
-```{r}
-lm_model2 <- lm(price ~ . - carat, data = data_with_boxcox)
+lm_model2 <- lm(price_transformed_lm2 ~ . - carat - price
+                - price_transformed_lm1,
+                data = data)
 ```
 
 # 13) Plot the residuals after Box-Cox transformation for second model
