@@ -231,6 +231,7 @@ bptest_result <- bptest(lm_model2)
 print(bptest_result)
 ```
 
+# 15) Calculate Cook's distance for second model
 ```{r, fig.width=10}
 cooks_distances <- cooks.distance(lm_model2)
 
