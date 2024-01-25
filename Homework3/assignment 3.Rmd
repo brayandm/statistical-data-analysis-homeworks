@@ -188,6 +188,27 @@ qqnorm(residuals(lm_model1))
 qqline(residuals(lm_model1), col = "red")
 ```
 
+# Plot the residuals after Box-Cox transformation for first model vs features
+```{r, fig.width=10, fig.height=10, cache=TRUE}
+addtrend <- function(x, y) {
+  y <- y[order(x)]
+  x <- sort(x)
+  lines(x, predict(loess(y ~ x)), col = "red")
+}
+
+par(mfrow = c(3, 3))
+
+for (column in numeric_columns) {
+  plot(data[[column]], residuals(lm_model1),
+       xlab = column, ylab = "Residuals", pch = 19)
+
+  addtrend(data[[column]], residuals(lm_model1))
+  grid()
+}
+
+par(mfrow = c(1, 1))
+```
+
 # Compare the residuals before and after Box-Cox transformation for first model
 ```{r, fig.width=10, fig.height=10}
 mse_original <- mean(residuals_data^2)
@@ -270,6 +291,27 @@ qqnorm(residuals(lm_model1))
 qqline(residuals(lm_model1), col = "red")
 ```
 
+# Plot the residuals after removing values with Cook's distance above 0.05 vs features
+```{r, fig.width=10, fig.height=10, cache=TRUE}
+addtrend <- function(x, y) {
+  y <- y[order(x)]
+  x <- sort(x)
+  lines(x, predict(loess(y ~ x)), col = "red")
+}
+
+par(mfrow = c(3, 3))
+
+for (column in numeric_columns) {
+  plot(data[[column]], residuals(lm_model1),
+       xlab = column, ylab = "Residuals", pch = 19)
+
+  addtrend(data[[column]], residuals(lm_model1))
+  grid()
+}
+
+par(mfrow = c(1, 1))
+```
+
 # Compare the residuals before and after removing values with Cook's distance above 0.05
 ```{r, fig.width=10, fig.height=10}
 mse_original <- mean(residuals_data_box_cox^2)
@@ -305,6 +347,27 @@ residuals_data <- residuals(lm_model2)
 
 qqnorm(residuals(lm_model2))
 qqline(residuals(lm_model2), col = "red")
+```
+
+# Plot the residuals of the second model vs features
+```{r, fig.width=10, fig.height=10, cache=TRUE}
+addtrend <- function(x, y) {
+  y <- y[order(x)]
+  x <- sort(x)
+  lines(x, predict(loess(y ~ x)), col = "red")
+}
+
+par(mfrow = c(3, 3))
+
+for (column in numeric_columns) {
+  plot(data[[column]], residuals(lm_model2),
+       xlab = column, ylab = "Residuals", pch = 19)
+
+  addtrend(data[[column]], residuals(lm_model2))
+  grid()
+}
+
+par(mfrow = c(1, 1))
 ```
 
 # Breusch-Pagan test for heteroscedasticity for second model
