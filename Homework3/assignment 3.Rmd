@@ -43,7 +43,7 @@ column_names <- names(data)
 print(column_names)
 ```
 
-## Tranform Categorical variables using dummy variables
+## Tranform Categorical variables to factors
 ```{r}
 
 data <- data %>%
