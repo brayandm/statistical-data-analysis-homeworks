@@ -94,8 +94,8 @@ data
 
 ## Make Pairplot
 ```{r}
-ggpairs(data, columns = c("carat", "cut", "color", "clarity",
-                          "depth", "table", "price", "x", "y", "z"))
+# ggpairs(data, columns = c("carat", "cut", "color", "clarity",
+#                           "depth", "table", "price", "x", "y", "z"))
 ```
 
 ## Make Correlation Plot
@@ -122,8 +122,8 @@ lm_model1 <- lm(price ~ . - diamond_classification, data = data)
 ```{r}
 residuals_data <- residuals(lm_model1)
 
-plot(residuals_data, main = "Residuals of the model 1")
-abline(h = 0, col = "red")
+qqnorm(residuals(lm_model1))
+qqline(residuals(lm_model1), col = "red")
 ```
 
 # 4) Kolmogorov-Smirnov test for first model
@@ -186,8 +186,8 @@ lm_model1 <- lm(price ~ . - diamond_classification, data = data_with_boxcox)
 ```{r}
 residuals_data <- residuals(lm_model1)
 
-plot(residuals_data, main = "Residuals of the model")
-abline(h = 0, col = "red")
+qqnorm(residuals(lm_model1))
+qqline(residuals(lm_model1), col = "red")
 ```
 
 # 7) Breusch-Pagan test for heteroscedasticity for first model
@@ -217,8 +217,8 @@ lm_model2 <- lm(price ~ . - carat, data = data)
 ```{r}
 residuals_data <- residuals(lm_model2)
 
-plot(residuals_data, main = "Residuals of the model 2")
-abline(h = 0, col = "red")
+qqnorm(residuals(lm_model2))
+qqline(residuals(lm_model2), col = "red")
 ```
 
 # 11) Kolmogorov-Smirnov test for second model
@@ -281,8 +281,8 @@ lm_model2 <- lm(price ~ . - carat, data = data_with_boxcox)
 ```{r}
 residuals_data <- residuals(lm_model2)
 
-plot(residuals_data, main = "Residuals of the model")
-abline(h = 0, col = "red")
+qqnorm(residuals(lm_model2))
+qqline(residuals(lm_model2), col = "red")
 ```
 
 # 14) Breusch-Pagan test for heteroscedasticity for second model
