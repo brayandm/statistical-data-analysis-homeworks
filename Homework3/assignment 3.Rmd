@@ -313,9 +313,35 @@ bptest_result <- bptest(lm_model2)
 print(bptest_result)
 ```
 
+### Notes:
+The p-value is less than 0.05, so we can reject the null hypothesis that the variance is constant, indicating that the model is heteroscedastic.
+
 # Davidson-MacKinnon J test to compare models
 ```{r}
 jtest_result <- jtest(lm_model1, lm_model2)
 
 print(jtest_result)
+```
+
+### Notes:
+The results, with extremely high t-values and very low p-values for both model comparisons,
+suggest that each model contains significant information not present in the other. This indicates
+that neither model is a restricted version of the other, and both models contribute unique information
+to the understanding of the price
+
+# Compare RMSE, MSE and MAE of the first and second model
+```{r, fig.width=10, fig.height=10}
+mse_model1 <- mean(residuals(lm_model1)^2)
+rmse_model1 <- sqrt(mse_model1)
+mae_model1 <- mean(abs(residuals(lm_model1)))
+mse_model2 <- mean(residuals(lm_model2)^2)
+rmse_model2 <- sqrt(mse_model2)
+mae_model2 <- mean(abs(residuals(lm_model2)))
+
+print(paste("MSE model 1:", mse_model1))
+print(paste("RMSE model 1:", rmse_model1))
+print(paste("MAE model 1:", mae_model1))
+print(paste("MSE model 2:", mse_model2))
+print(paste("RMSE model 2:", rmse_model2))
+print(paste("MAE model 2:", mae_model2))
 ```
