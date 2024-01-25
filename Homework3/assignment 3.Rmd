@@ -103,7 +103,7 @@ print(names(data))
 
 ## Make Pairplot
 ```{r}
-ggpairs(data, columns = names(data))
+ggpairs(data, columns = c("price", "carat", "depth", "table", "x", "y", "z"))
 ```
 
 ## Make Correlation Plot
