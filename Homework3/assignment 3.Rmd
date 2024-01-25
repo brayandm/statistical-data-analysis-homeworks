@@ -43,53 +43,62 @@ column_names <- names(data)
 print(column_names)
 ```
 
-## Tranform data from string to numeric
+## Tranform Categorical variables using dummy variables
 ```{r}
 
 data <- data %>%
-  mutate(cut = case_when(
-    cut == "Fair" ~ 1,
-    cut == "Good" ~ 2,
-    cut == "Very Good" ~ 3,
-    cut == "Premium" ~ 4,
-    cut == "Ideal" ~ 5,
-  ))
+  mutate(cut = factor(cut, levels = c("Fair",
+                                      "Good",
+                                      "Very Good",
+                                      "Premium",
+                                      "Ideal"))) %>%
 
-data <- data %>%
-  mutate(color = case_when(
-    color == "J" ~ 1,
-    color == "I" ~ 2,
-    color == "H" ~ 3,
-    color == "G" ~ 4,
-    color == "F" ~ 5,
-    color == "E" ~ 6,
-    color == "D" ~ 7,
-  ))
+  mutate(color = factor(color, levels = c("J",
+                                          "I",
+                                          "H",
+                                          "G",
+                                          "F",
+                                          "E",
+                                          "D"))) %>%
 
-data <- data %>%
-  mutate(clarity = case_when(
-    clarity == "I1" ~ 1,
-    clarity == "SI1" ~ 2,
-    clarity == "SI2" ~ 3,
-    clarity == "VS1" ~ 4,
-    clarity == "VS2" ~ 5,
-    clarity == "VVS1" ~ 6,
-    clarity == "VVS2" ~ 7,
-    clarity == "IF" ~ 8,
-  ))
+  mutate(clarity = factor(clarity, levels = c("I1",
+                                              "SI1",
+                                              "SI2",
+                                              "VS1",
+                                              "VS2",
+                                              "VVS1",
+                                              "VVS2",
+                                              "IF"))) %>%
 
-data <- data %>%
-  mutate(diamond_classification = case_when(
-    diamond_classification == "small" ~ 1,
-    diamond_classification == "medium" ~ 2,
-    diamond_classification == "large" ~ 3
-  ))
+  mutate(diamond_classification =
+           factor(diamond_classification, levels = c("small",
+                                                     "medium",
+                                                     "large")))
 
-for (var in column_names) {
-  data[[var]] <- as.numeric(data[[var]])
-}
+cut_dummies <- model.matrix(~ cut - 1, data)
+color_dummies <- model.matrix(~ color - 1, data)
+clarity_dummies <- model.matrix(~ clarity - 1, data)
+diamond_classification_dummies <-
+  model.matrix(~ diamond_classification - 1, data)
 
-data
+cut_dummies <- cut_dummies[, -1]
+color_dummies <- color_dummies[, -1]
+clarity_dummies <- clarity_dummies[, -1]
+diamond_classification_dummies <- diamond_classification_dummies[, -1]
+
+data <- cbind(data, cut_dummies,
+              color_dummies,
+              clarity_dummies,
+              diamond_classification_dummies)
+
+data <- data[, !(names(data) %in% c("cut",
+                                    "color",
+                                    "clarity",
+                                    "diamond_classification"))]
+
+column_names <- names(data)
+
+print(names(data))
 ```
 
 ## Make Pairplot
@@ -115,7 +124,7 @@ for (var in column_names) {
 ```{r}
 data <- data.frame(lapply(data, as.numeric))
 
-lm_model1 <- lm(price ~ . - diamond_classification, data = data)
+lm_model1 <- lm(price ~ . - diamond_classificationmedium - diamond_classificationlarge, data = data)
 ```
 
 # 3) Plot the residuals of the first model
@@ -139,7 +148,7 @@ data$price_transformed_lm1 <- (data$price^lambda_optimal - 1) / lambda_optimal
 ```{r}
 data <- data.frame(lapply(data, as.numeric))
 
-lm_model1 <- lm(price_transformed_lm1 ~ . - diamond_classification - price,
+lm_model1 <- lm(price_transformed_lm1 ~ . - diamond_classificationmedium - diamond_classificationlarge - price,
                 data = data)
 ```
 
