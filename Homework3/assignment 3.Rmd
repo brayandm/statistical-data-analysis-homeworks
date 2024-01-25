@@ -79,7 +79,7 @@ ggcorrplot(cor_mat)
 We can notice that variables 'x', 'y', 'z', 'carat' and 'price' are highly correlated, and 'depth' and 'table' inversely correlated
 
 ## Check for outliers using boxplot
-```{r, fig.width=10, fig.height=10}
+```{r, fig.width=10, fig.height=10, cache=TRUE}
 par(mfrow = c(3, 3))
 
 numeric_columns <- column_names[sapply(data[column_names], is.numeric)]
@@ -92,7 +92,35 @@ par(mfrow = c(1, 1))
 ```
 
 ### Notes:
-We can see some important outliers in 'carat', 'depth', 'table', 'x', 'y', 'z'
+We can see some important outliers in 'carat', 'depth', 'table', 'x', 'y', 'z'. Let's remove them
+
+# Remove outliers
+```{r}
+data <- data %>%
+  filter(carat < 3.5,
+         depth > 50 & depth < 75,
+         table > 40 & table < 80,
+         x > 1,
+         y < 15,
+         z < 10)
+
+```
+
+# Print boxplot without outliers
+```{r, fig.width=10, fig.height=10, cache=TRUE}
+par(mfrow = c(3, 3))
+
+numeric_columns <- column_names[sapply(data[column_names], is.numeric)]
+
+for (var in numeric_columns) {
+  boxplot(data[[var]], main = var)
+}
+
+par(mfrow = c(1, 1))
+```
+
+### Notes:
+Now we can see more clearly the data without extreme values
 
 # Create the first model
 ```{r}
