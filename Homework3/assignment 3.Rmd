@@ -336,8 +336,6 @@ So let's keep this new data without values with Cook's distance above 0.05 for t
 
 # Create second lineal model
 ```{r}
-data <- data.frame(lapply(data, as.numeric))
-
 lm_model2 <- lm(price_transformed ~ . - carat - price, data = data)
 ```
 
