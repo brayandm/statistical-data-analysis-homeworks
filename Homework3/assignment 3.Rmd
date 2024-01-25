@@ -246,9 +246,21 @@ data <- data[-which(cooks_distances > 0.05), ]
 
 # Update the first model with the data without values with Cook's distance above 0.05
 ```{r}
+lm_old <- lm_model1
+
 lm_model1 <- lm(price_transformed ~ . - diamond_classification - price,
                 data = data)
 ```
+
+# Compare the coefficients of the first model before and after removing values with Cook's distance above 0.05
+```{r}
+print(summary(lm_old)$coefficients)
+print(summary(lm_model1)$coefficients)
+```
+
+### Notes:
+We can notice some changes in the coefficients, specially in 'x', 'y' and 'z'. 
+So removing values with high Cook's distance affected the model, so let's see if it improved.
 
 # Plot the residuals after removing values with Cook's distance above 0.05
 ```{r}
