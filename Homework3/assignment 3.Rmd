@@ -127,8 +127,6 @@ Now we can see more clearly the data without extreme values
 
 # Create the first model
 ```{r}
-data <- data.frame(lapply(data, as.numeric))
-
 lm_model1 <- lm(price ~ . - diamond_classification, data = data)
 ```
 
@@ -177,8 +175,6 @@ the model assumptions, such as linearity, homoscedasticity (constant variance), 
 
 # Update the first model with the data transformed
 ```{r}
-data <- data.frame(lapply(data, as.numeric))
-
 lm_model1 <- lm(price_transformed ~ . - diamond_classification - price,
                 data = data)
 ```
