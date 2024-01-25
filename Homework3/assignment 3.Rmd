@@ -97,14 +97,17 @@ We can see some important outliers in 'carat', 'depth', 'table', 'x', 'y', 'z'. 
 # Remove outliers
 ```{r}
 data <- data %>%
-  filter(carat < 3.5,
+  filter(0 < carat & carat < 3.5,
          depth > 50 & depth < 75,
          table > 40 & table < 80,
          x > 1,
-         y < 15,
-         z < 10)
-
+         0 < y & y < 15,
+         0 < z & z < 10)
 ```
+
+### Notes:
+We removed some outliers in 'carat', 'depth', 'table', 'x', 'y', 'z' (the limits were chosen by visual inspection),
+some variables like 'x', 'y', 'z' need to be greater than 0 because they are the dimensions of the diamond.
 
 # Print boxplot without outliers
 ```{r, fig.width=10, fig.height=10, cache=TRUE}
