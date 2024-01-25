@@ -171,7 +171,7 @@ abline(h = 4 / (nrow(data) - length(coef(lm_model1))), col = "red")
 ```{r}
 data <- data.frame(lapply(data, as.numeric))
 
-lm_model2 <- lm(price ~ . - carat, data = data)
+lm_model2 <- lm(price ~ . - carat - price_transformed_lm1, data = data)
 ```
 
 # 10) Plot the residuals of the second model
