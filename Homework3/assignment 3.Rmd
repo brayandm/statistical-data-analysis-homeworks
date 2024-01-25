@@ -135,7 +135,10 @@ residuals_data <- residuals(lm_model1)
 
 qqnorm(residuals(lm_model1))
 qqline(residuals(lm_model1), col = "red")
+```
 
+# Plot the residuals of the first model vs features
+```{r, fig.width=10, fig.height=10, cache=TRUE}
 addtrend <- function(x, y) {
   y <- y[order(x)]
   x <- sort(x)
