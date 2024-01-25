@@ -75,9 +75,11 @@ ggcorrplot(cor_mat)
 
 ## Check for outliers using boxplot
 ```{r, fig.width=10, fig.height=10}
-par(mfrow = c(3, 4))
+par(mfrow = c(3, 3))
 
-for (var in column_names) {
+numeric_columns <- column_names[sapply(data[column_names], is.numeric)]
+
+for (var in numeric_columns) {
   boxplot(data[[var]], main = var)
 }
 
