@@ -215,6 +215,9 @@ bptest_result <- bptest(lm_model1)
 print(bptest_result)
 ```
 
+### Notes:
+The p-value is less than 0.05, so we can reject the null hypothesis that the variance is constant, indicating that the model is heteroscedastic.
+
 # Calculate Cook's distance for first model
 ```{r, fig.width=10}
 cooks_distances <- cooks.distance(lm_model1)
