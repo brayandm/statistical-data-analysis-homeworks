@@ -26,6 +26,18 @@ print(description)
 print(data)
 ```
 
+## Make Pairplot
+```{r}
+ggpairs(data, columns = c("carat", "cut", "color", "clarity",
+                          "depth", "table", "price", "x", "y", "z"))
+```
+
+## Make Correlation Plot
+```{r}
+cor_mat <- cor(data)
+ggcorrplot(cor_mat)
+```
+
 ## Add diamond classification column
 ```{r}
 data <- data %>%
@@ -101,18 +113,6 @@ column_names <- names(data)
 print(names(data))
 ```
 
-## Make Pairplot
-```{r}
-ggpairs(data, columns = c("carat", "cut", "color", "clarity",
-                          "depth", "table", "price", "x", "y", "z"))
-```
-
-## Make Correlation Plot
-```{r}
-cor_mat <- cor(data)
-ggcorrplot(cor_mat)
-```
-
 ## Check for outliers using boxplot
 ```{r}
 for (var in column_names) {
@@ -124,7 +124,8 @@ for (var in column_names) {
 ```{r}
 data <- data.frame(lapply(data, as.numeric))
 
-lm_model1 <- lm(price ~ . - diamond_classificationmedium - diamond_classificationlarge, data = data)
+lm_model1 <- lm(price ~ . - diamond_classificationmedium
+                - diamond_classificationlarge, data = data)
 ```
 
 # 3) Plot the residuals of the first model
@@ -148,7 +149,8 @@ data$price_transformed_lm1 <- (data$price^lambda_optimal - 1) / lambda_optimal
 ```{r}
 data <- data.frame(lapply(data, as.numeric))
 
-lm_model1 <- lm(price_transformed_lm1 ~ . - diamond_classificationmedium - diamond_classificationlarge - price,
+lm_model1 <- lm(price_transformed_lm1 ~ . - diamond_classificationmedium
+                - diamond_classificationlarge - price,
                 data = data)
 ```
 
