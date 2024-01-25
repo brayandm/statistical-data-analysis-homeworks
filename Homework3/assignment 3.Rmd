@@ -107,7 +107,7 @@ qqline(residuals(lm_model1), col = "red")
 bc_result <- boxcox(lm_model1)
 lambda_optimal <- bc_result$x[which.max(bc_result$y)]
 
-data$price_transformed <- (data$price^lambda_optimal - 1) / lambda_optimal
+data$price_transformed <- log(data$price)
 ```
 
 # 5) Update the first model with the data transformed
