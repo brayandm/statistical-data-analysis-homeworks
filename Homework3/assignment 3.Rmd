@@ -168,12 +168,19 @@ print(bptest_result)
 ```
 
 # 8) Calculate Cook's distance for first model
-```{r}
+```{r, fig.width=10}
 cooks_distances <- cooks.distance(lm_model1)
 
-plot(cooks_distances, type = "h", main = "Cook's distances",
-     ylab = "Cook's distance", xlab = "Observation Index")
+par(mfrow = c(1, 2))
 
+plot(fitted(lm_model1), cooks_distances,
+     xlab = "Fitted Values", ylab = "Cook's Distance",
+     main = "Cook's Distance vs Fitted Values", col = "blue", pch = 19)
+abline(h = 4 / (nrow(data) - length(coef(lm_model1))), col = "red")
+
+plot(data$price_transformed_lm1, cooks_distances,
+     xlab = "Transformed Values", ylab = "Cook's Distance",
+     main = "Cook's Distance vs Transformed Values", col = "blue", pch = 19)
 abline(h = 4 / (nrow(data) - length(coef(lm_model1))), col = "red")
 ```
 
@@ -224,13 +231,19 @@ bptest_result <- bptest(lm_model2)
 print(bptest_result)
 ```
 
-# 15) Calculate Cook's distance for second model
-```{r}
+```{r, fig.width=10}
 cooks_distances <- cooks.distance(lm_model2)
 
-plot(cooks_distances, type = "h", main = "Cook's distances",
-     ylab = "Cook's distance", xlab = "Observation Index")
+par(mfrow = c(1, 2))
 
+plot(fitted(lm_model2), cooks_distances,
+     xlab = "Fitted Values", ylab = "Cook's Distance",
+     main = "Cook's Distance vs Fitted Values", col = "blue", pch = 19)
+abline(h = 4 / (nrow(data) - length(coef(lm_model2))), col = "red")
+
+plot(data$price_transformed_lm2, cooks_distances,
+     xlab = "Transformed Values", ylab = "Cook's Distance",
+     main = "Cook's Distance vs Transformed Values", col = "blue", pch = 19)
 abline(h = 4 / (nrow(data) - length(coef(lm_model2))), col = "red")
 ```
 
