@@ -4,7 +4,7 @@ author: "Brayan Duran Medina"
 output: html_document
 ---
 
-# 0) Importing libraries
+# Importing libraries
 ```{r}
 library(readxl)
 library(dplyr)
@@ -15,7 +15,7 @@ library(MASS)
 library(lmtest)
 ```
 
-# 1) Plot the data, analyze if predictors need to be transform, check for outliers
+# Plot the data, analyze if predictors need to be transform, check for outliers
 
 ## Read description and data from Excel file
 ```{r}
@@ -91,14 +91,17 @@ for (var in numeric_columns) {
 par(mfrow = c(1, 1))
 ```
 
-# 2) Create the first model
+### Notes:
+We can see some important outliers in 'carat', 'depth', 'table', 'x', 'y', 'z'
+
+# Create the first model
 ```{r}
 data <- data.frame(lapply(data, as.numeric))
 
 lm_model1 <- lm(price ~ . - diamond_classification, data = data)
 ```
 
-# 3) Plot the residuals of the first model
+# Plot the residuals of the first model
 ```{r, fig.width=10, fig.height=10, cache=TRUE}
 residuals_data <- residuals(lm_model1)
 
@@ -124,7 +127,7 @@ for (column in numeric_columns) {
 par(mfrow = c(1, 1))
 ```
 
-# 4) Box-Cox Transformation for first model
+# Box-Cox Transformation for first model
 
 ```{r}
 bc_result <- boxcox(lm_model1)
@@ -133,7 +136,7 @@ lambda_optimal <- bc_result$x[which.max(bc_result$y)]
 data$price_transformed <- log(data$price)
 ```
 
-# 5) Update the first model with the data transformed
+# Update the first model with the data transformed
 ```{r}
 data <- data.frame(lapply(data, as.numeric))
 
@@ -141,7 +144,7 @@ lm_model1 <- lm(price_transformed ~ . - diamond_classification - price,
                 data = data)
 ```
 
-# 6) Plot the residuals after Box-Cox transformation for first model
+# Plot the residuals after Box-Cox transformation for first model
 ```{r}
 residuals_data <- residuals(lm_model1)
 
@@ -149,13 +152,13 @@ qqnorm(residuals(lm_model1))
 qqline(residuals(lm_model1), col = "red")
 ```
 
-# 7) Breusch-Pagan test for heteroscedasticity for first model
+# Breusch-Pagan test for heteroscedasticity for first model
 ```{r}
 bptest_result <- bptest(lm_model1)
 print(bptest_result)
 ```
 
-# 8) Calculate Cook's distance for first model
+# Calculate Cook's distance for first model
 ```{r, fig.width=10}
 cooks_distances <- cooks.distance(lm_model1)
 
@@ -172,14 +175,14 @@ plot(data$price_transformed, cooks_distances,
 abline(h = 4 / (nrow(data) - length(coef(lm_model1))), col = "red")
 ```
 
-# 9) Create second lineal model
+# Create second lineal model
 ```{r}
 data <- data.frame(lapply(data, as.numeric))
 
 lm_model2 <- lm(price_transformed ~ . - carat - price, data = data)
 ```
 
-# 10) Plot the residuals of the second model
+# Plot the residuals of the second model
 ```{r}
 residuals_data <- residuals(lm_model2)
 
@@ -187,13 +190,13 @@ qqnorm(residuals(lm_model2))
 qqline(residuals(lm_model2), col = "red")
 ```
 
-# 11) Breusch-Pagan test for heteroscedasticity for second model
+# Breusch-Pagan test for heteroscedasticity for second model
 ```{r}
 bptest_result <- bptest(lm_model2)
 print(bptest_result)
 ```
 
-# 12) Calculate Cook's distance for second model
+# Calculate Cook's distance for second model
 ```{r, fig.width=10}
 cooks_distances <- cooks.distance(lm_model2)
 
@@ -210,7 +213,7 @@ plot(data$price_transformed, cooks_distances,
 abline(h = 4 / (nrow(data) - length(coef(lm_model2))), col = "red")
 ```
 
-# 13) Davidson-MacKinnon J test to compare models
+# Davidson-MacKinnon J test to compare models
 ```{r}
 jtest_result <- jtest(lm_model1, lm_model2)
 
