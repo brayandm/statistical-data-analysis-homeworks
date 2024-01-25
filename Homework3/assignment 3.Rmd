@@ -101,14 +101,14 @@ qqline(residuals(lm_model1), col = "red")
 bc_result <- boxcox(lm_model1)
 lambda_optimal <- bc_result$x[which.max(bc_result$y)]
 
-data$price_transformed_lm1 <- (data$price^lambda_optimal - 1) / lambda_optimal
+data$price_transformed <- (data$price^lambda_optimal - 1) / lambda_optimal
 ```
 
 # 5) Update the first model with the data transformed
 ```{r}
 data <- data.frame(lapply(data, as.numeric))
 
-lm_model1 <- lm(price_transformed_lm1 ~ . - diamond_classification - price,
+lm_model1 <- lm(price_transformed ~ . - diamond_classification - price,
                 data = data)
 ```
 
@@ -137,7 +137,7 @@ plot(fitted(lm_model1), cooks_distances,
      main = "Cook's Distance vs Fitted Values", col = "blue", pch = 19)
 abline(h = 4 / (nrow(data) - length(coef(lm_model1))), col = "red")
 
-plot(data$price_transformed_lm1, cooks_distances,
+plot(data$price_transformed, cooks_distances,
      xlab = "Transformed Values", ylab = "Cook's Distance",
      main = "Cook's Distance vs Transformed Values", col = "blue", pch = 19)
 abline(h = 4 / (nrow(data) - length(coef(lm_model1))), col = "red")
@@ -147,7 +147,7 @@ abline(h = 4 / (nrow(data) - length(coef(lm_model1))), col = "red")
 ```{r}
 data <- data.frame(lapply(data, as.numeric))
 
-lm_model2 <- lm(price ~ . - carat - price_transformed_lm1, data = data)
+lm_model2 <- lm(price_transformed ~ . - carat - price, data = data)
 ```
 
 # 10) Plot the residuals of the second model
@@ -158,39 +158,13 @@ qqnorm(residuals(lm_model2))
 qqline(residuals(lm_model2), col = "red")
 ```
 
-# 11) Box-Cox Transformation for second model
-
-```{r}
-bc_result <- boxcox(lm_model2)
-lambda_optimal <- bc_result$x[which.max(bc_result$y)]
-
-data$price_transformed_lm2 <- (data$price^lambda_optimal - 1) / lambda_optimal
-```
-
-# 12) Update the second model with the data transformed
-```{r}
-data <- data.frame(lapply(data, as.numeric))
-
-lm_model2 <- lm(price_transformed_lm2 ~ . - carat - price
-                - price_transformed_lm1,
-                data = data)
-```
-
-# 13) Plot the residuals after Box-Cox transformation for second model
-```{r}
-residuals_data <- residuals(lm_model2)
-
-qqnorm(residuals(lm_model2))
-qqline(residuals(lm_model2), col = "red")
-```
-
-# 14) Breusch-Pagan test for heteroscedasticity for second model
+# 11) Breusch-Pagan test for heteroscedasticity for second model
 ```{r}
 bptest_result <- bptest(lm_model2)
 print(bptest_result)
 ```
 
-# 15) Calculate Cook's distance for second model
+# 12) Calculate Cook's distance for second model
 ```{r, fig.width=10}
 cooks_distances <- cooks.distance(lm_model2)
 
@@ -201,20 +175,20 @@ plot(fitted(lm_model2), cooks_distances,
      main = "Cook's Distance vs Fitted Values", col = "blue", pch = 19)
 abline(h = 4 / (nrow(data) - length(coef(lm_model2))), col = "red")
 
-plot(data$price_transformed_lm2, cooks_distances,
+plot(data$price_transformed, cooks_distances,
      xlab = "Transformed Values", ylab = "Cook's Distance",
      main = "Cook's Distance vs Transformed Values", col = "blue", pch = 19)
 abline(h = 4 / (nrow(data) - length(coef(lm_model2))), col = "red")
 ```
 
-# 16) Davidson-MacKinnon J test to compare models
+# 13) Davidson-MacKinnon J test to compare models
 ```{r}
 jtest_result <- jtest(lm_model1, lm_model2)
 
 print(jtest_result)
 ```
 
-# 17) Conclusion
+# 14) Conclusion
 
 1. **Data Transformation and Analysis**:
    - The data was successfully transformed from categorical to numerical format using dummy variables.
