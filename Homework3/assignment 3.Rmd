@@ -187,32 +187,3 @@ jtest_result <- jtest(lm_model1, lm_model2)
 
 print(jtest_result)
 ```
-
-# 14) Conclusion
-
-1. **Data Transformation and Analysis**:
-   - The data was successfully transformed from categorical to numerical format using dummy variables.
-   - Pairplots and correlation plots were generated, offering a visual understanding of the relationships between variables. Notably, boxplots were used to identify potential outliers.
-
-2. **Model Development and Evaluation**:
-   - Two linear regression models were constructed. The first model (`lm_model1`) excluded the 'diamond_classification' categories, while the second model (`lm_model2`) excluded 'carat'.
-   - Residual analysis for both models revealed the distribution of errors. The Kolmogorov-Smirnov test indicated non-normal distribution of residuals for both models, as evidenced by significant p-values in all cases.
-
-3. **Box-Cox Transformation**:
-   - The Box-Cox transformation was applied to variables with significant p-values in the Kolmogorov-Smirnov test. This step aimed to improve the normality of the data.
-   - However, it was noted that the variables 'x', 'y', and 'z' were not transformed due to non-positive values.
-
-4. **Heteroscedasticity Check**:
-   - The Breusch-Pagan test indicated the presence of heteroscedasticity in both models, with significant p-values suggesting non-constant variance of residuals.
-
-5. **Influence Analysis**:
-   - Cook's distance calculations identified influential observations within both models.
-
-6. **Model Comparison Using Davidson-MacKinnon J Test**:
-   - The Davidson-MacKinnon J test was used to compare the two models. The results showed that both models significantly contribute to explaining the 'price' variable. However, the addition of fitted values from `lm_model2` to `lm_model1` and vice versa resulted in significant improvements in both cases.
-   - This suggests that each model has unique features that are important for predicting the 'price'. The choice of a superior model depends on specific analysis goals and the balance between model simplicity and predictive accuracy.
-
-7. **Final Thoughts**:
-   - Both models demonstrate significant predictive capabilities, but they also have distinct characteristics. The inclusion or exclusion of specific variables ('diamond_classification' and 'carat') impacts the model performance differently.
-   - The presence of heteroscedasticity and the influence of certain data points (as indicated by Cook's distance) should be considered in further model refinements and applications.
-   - Overall, the analysis illustrates the complexity of modeling in real-world scenarios and the importance of thorough evaluation and comparison of different models.
