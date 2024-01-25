@@ -206,6 +206,9 @@ print(paste("RMSE Box-Cox:", rmse_box_cox))
 print(paste("MAE Box-Cox:", mae_box_cox))
 ```
 
+### Notes:
+We can notice that the model improved after the Box-Cox transformation, the RMSE, MSE and MAE decreased.
+
 # Breusch-Pagan test for heteroscedasticity for first model
 ```{r}
 bptest_result <- bptest(lm_model1)
