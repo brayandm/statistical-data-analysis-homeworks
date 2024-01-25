@@ -65,12 +65,12 @@ print(names(data))
 ```
 
 ## Make Pairplot
-```{r, fig.width=10, fig.height=10}
-# ggpairs(data, columns = c("price", "carat", "depth", "table", "x", "y", "z"))
+```{r, fig.width=10, fig.height=10, cache=TRUE}
+ggpairs(data, columns = c("price", "carat", "depth", "table", "x", "y", "z"))
 ```
 
 ## Make Correlation Plot
-```{r, fig.width=10, fig.height=10}
+```{r, fig.width=10, fig.height=10, cache=TRUE}
 cor_mat <- cor(data[sapply(data, is.numeric)])
 ggcorrplot(cor_mat)
 ```
