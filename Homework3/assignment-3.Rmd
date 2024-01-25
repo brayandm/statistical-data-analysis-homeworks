@@ -1,0 +1,321 @@
+---
+title: "Linear Regression"
+author: "Brayan Duran Medina"
+output: html_document
+---
+
+# Importing libraries
+```{r}
+library(readxl)
+library(dplyr)
+library(ggplot2)
+library(GGally)
+library(ggcorrplot)
+library(MASS)
+library(lmtest)
+```
+
+# Plot the data, analyze if predictors need to be transform, check for outliers
+
+## Read description and data from Excel file
+```{r}
+description <- read_excel("diamonds.xlsx", sheet = "description")
+data <- read_excel("diamonds.xlsx", sheet = "data")
+
+print(description)
+print(data)
+```
+
+## Add diamond classification column
+```{r}
+data <- data %>%
+  mutate(diamond_classification = case_when(
+    carat < 0.3 ~ "small",
+    carat >= 0.3 & carat < 1 ~ "medium",
+    carat >= 1 ~ "large"
+  ))
+```
+
+## Columns names
+```{r}
+column_names <- names(data)
+
+numeric_columns <- column_names[sapply(data[column_names], is.numeric)]
+
+print(column_names)
+```
+
+## Tranform Categorical variables to factors
+```{r}
+
+data <- data %>%
+  mutate(cut = factor(cut, levels =
+                        c("Fair", "Good", "Very Good", "Premium", "Ideal")),
+         color = factor(color, levels =
+                          c("J", "I", "H", "G", "F", "E", "D")),
+         clarity = factor(clarity, levels =
+                            c("I1", "SI1", "SI2", "VS1",
+                              "VS2", "VVS1", "VVS2", "IF")),
+         diamond_classification = factor(diamond_classification, levels =
+                                           c("small", "medium", "large")))
+
+column_names <- names(data)
+
+print(names(data))
+```
+
+## Make Pairplot
+```{r, fig.width=10, fig.height=10, cache=TRUE}
+ggpairs(data, columns = c("price", "carat", "depth", "table", "x", "y", "z"))
+```
+
+## Make Correlation Plot
+```{r, fig.width=10, fig.height=10, cache=TRUE}
+cor_mat <- cor(data[sapply(data, is.numeric)])
+ggcorrplot(cor_mat)
+```
+
+### Notes: 
+We can notice that variables 'x', 'y', 'z', 'carat' and 'price' are highly correlated, and 'depth' and 'table' inversely correlated
+
+## Check for outliers using boxplot
+```{r, fig.width=10, fig.height=10, cache=TRUE}
+par(mfrow = c(3, 3))
+
+numeric_columns <- column_names[sapply(data[column_names], is.numeric)]
+
+for (var in numeric_columns) {
+  boxplot(data[[var]], main = var)
+}
+
+par(mfrow = c(1, 1))
+```
+
+### Notes:
+We can see some important outliers in 'carat', 'depth', 'table', 'x', 'y', 'z'. Let's remove them
+
+# Remove outliers
+```{r}
+data <- data %>%
+  filter(carat < 3.5,
+         depth > 50 & depth < 75,
+         table > 40 & table < 80,
+         x > 1,
+         y < 15,
+         z < 10)
+
+```
+
+# Print boxplot without outliers
+```{r, fig.width=10, fig.height=10, cache=TRUE}
+par(mfrow = c(3, 3))
+
+numeric_columns <- column_names[sapply(data[column_names], is.numeric)]
+
+for (var in numeric_columns) {
+  boxplot(data[[var]], main = var)
+}
+
+par(mfrow = c(1, 1))
+```
+
+### Notes:
+Now we can see more clearly the data without extreme values
+
+# Create the first model
+```{r}
+data <- data.frame(lapply(data, as.numeric))
+
+lm_model1 <- lm(price ~ . - diamond_classification, data = data)
+```
+
+# Plot the residuals of the first model
+```{r, fig.width=10, fig.height=10, cache=TRUE}
+residuals_data <- residuals(lm_model1)
+
+qqnorm(residuals(lm_model1))
+qqline(residuals(lm_model1), col = "red")
+```
+
+# Plot the residuals of the first model vs features
+```{r, fig.width=10, fig.height=10, cache=TRUE}
+addtrend <- function(x, y) {
+  y <- y[order(x)]
+  x <- sort(x)
+  lines(x, predict(loess(y ~ x)), col = "red")
+}
+
+par(mfrow = c(3, 3))
+
+for (column in numeric_columns) {
+  plot(data[[column]], residuals(lm_model1),
+       xlab = column, ylab = "Residuals", pch = 19)
+
+  addtrend(data[[column]], residuals(lm_model1))
+  grid()
+}
+
+par(mfrow = c(1, 1))
+```
+
+# Box-Cox Transformation for first model
+
+```{r}
+bc_result <- boxcox(lm_model1)
+lambda_optimal <- bc_result$x[which.max(bc_result$y)]
+
+data$price_transformed <- log(data$price)
+```
+
+### Notes:
+We obtained a lambda value close to 0, indicating that a log transformation is appropriate for the target variable.
+In statistical analyses, especially in regression models, transforming the target variable can be crucial for meeting 
+the model assumptions, such as linearity, homoscedasticity (constant variance), and normality of residuals.
+
+# Update the first model with the data transformed
+```{r}
+data <- data.frame(lapply(data, as.numeric))
+
+lm_model1 <- lm(price_transformed ~ . - diamond_classification - price,
+                data = data)
+```
+
+# Plot the residuals after Box-Cox transformation for first model
+```{r}
+residuals_data_box_cox <- exp(predict(lm_model1)) - data$price
+
+qqnorm(residuals(lm_model1))
+qqline(residuals(lm_model1), col = "red")
+```
+
+# Compare the residuals before and after Box-Cox transformation for first model
+```{r, fig.width=10, fig.height=10}
+mse_original <- mean(residuals_data^2)
+rmse_original <- sqrt(mse_original)
+mae_original <- mean(abs(residuals_data))
+
+mse_box_cox <- mean(residuals_data_box_cox^2)
+rmse_box_cox <- sqrt(mse_box_cox)
+mae_box_cox <- mean(abs(residuals_data_box_cox))
+
+print(paste("MSE original:", mse_original))
+print(paste("RMSE original:", rmse_original))
+print(paste("MAE original:", mae_original))
+print(paste("MSE Box-Cox:", mse_box_cox))
+print(paste("RMSE Box-Cox:", rmse_box_cox))
+print(paste("MAE Box-Cox:", mae_box_cox))
+```
+
+### Notes:
+We can notice that the model improved after the Box-Cox transformation, the RMSE, MSE and MAE decreased.
+
+# Breusch-Pagan test for heteroscedasticity for first model
+```{r}
+bptest_result <- bptest(lm_model1)
+print(bptest_result)
+```
+
+### Notes:
+The p-value is less than 0.05, so we can reject the null hypothesis that the variance is constant, indicating that the model is heteroscedastic.
+
+# Calculate Cook's distance for first model
+```{r, fig.width=10}
+cooks_distances <- cooks.distance(lm_model1)
+
+par(mfrow = c(1, 2))
+
+plot(fitted(lm_model1), cooks_distances,
+     xlab = "Fitted Values", ylab = "Cook's Distance",
+     main = "Cook's Distance vs Fitted Values", col = "blue", pch = 19)
+abline(h = 4 / (nrow(data) - length(coef(lm_model1))), col = "red")
+
+plot(data$price_transformed, cooks_distances,
+     xlab = "Transformed Values", ylab = "Cook's Distance",
+     main = "Cook's Distance vs Transformed Values", col = "blue", pch = 19)
+abline(h = 4 / (nrow(data) - length(coef(lm_model1))), col = "red")
+```
+
+### Notes:
+We can note that there are some high values of Cook's distance that could affect the model, so let's try
+to remove them above the threshold of 0.05 (chosen by visual inspection)
+
+# Remove values with Cook's distance above 0.05
+```{r}
+data <- data[-which(cooks_distances > 0.05), ]
+```
+
+# Update the first model with the data without values with Cook's distance above 0.05
+```{r}
+lm_old <- lm_model1
+
+lm_model1 <- lm(price_transformed ~ . - diamond_classification - price,
+                data = data)
+```
+
+# Compare the coefficients of the first model before and after removing values with Cook's distance above 0.05
+```{r}
+print(summary(lm_old)$coefficients)
+print(summary(lm_model1)$coefficients)
+```
+
+### Notes:
+We can notice some changes in the coefficients, specially in 'x', 'y' and 'z'. 
+So removing values with high Cook's distance affected the model, so let's see if it improved.
+
+# Plot the residuals after removing values with Cook's distance above 0.05
+```{r}
+residuals_data_after_cook <- exp(predict(lm_model1)) - data$price
+
+qqnorm(residuals(lm_model1))
+qqline(residuals(lm_model1), col = "red")
+```
+
+# Compare the residuals before and after removing values with Cook's distance above 0.05
+```{r, fig.width=10, fig.height=10}
+mse_original <- mean(residuals_data_box_cox^2)
+rmse_original <- sqrt(mse_original)
+mae_original <- mean(abs(residuals_data_box_cox))
+
+mse_after_cook <- mean(residuals_data_after_cook^2)
+rmse_after_cook <- sqrt(mse_after_cook)
+mae_after_cook <- mean(abs(residuals_data_after_cook))
+
+print(paste("MSE original:", mse_original))
+print(paste("RMSE original:", rmse_original))
+print(paste("MAE original:", mae_original))
+print(paste("MSE after Cook:", mse_after_cook))
+print(paste("RMSE after Cook:", rmse_after_cook))
+print(paste("MAE after Cook:", mae_after_cook))
+```
+
+### Notes:
+We can notice that the model improved after removing values with Cook's distance above 0.05, the RMSE, MSE and MAE decreased.
+So let's keep this new data without values with Cook's distance above 0.05 for the next model.
+
+# Create second lineal model
+```{r}
+data <- data.frame(lapply(data, as.numeric))
+
+lm_model2 <- lm(price_transformed ~ . - carat - price, data = data)
+```
+
+# Plot the residuals of the second model
+```{r}
+residuals_data <- residuals(lm_model2)
+
+qqnorm(residuals(lm_model2))
+qqline(residuals(lm_model2), col = "red")
+```
+
+# Breusch-Pagan test for heteroscedasticity for second model
+```{r}
+bptest_result <- bptest(lm_model2)
+print(bptest_result)
+```
+
+# Davidson-MacKinnon J test to compare models
+```{r}
+jtest_result <- jtest(lm_model1, lm_model2)
+
+print(jtest_result)
+```
