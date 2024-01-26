@@ -104,7 +104,7 @@ grid()
 Looking at the plot of the original series and the transformed one, we can see that there is not so much variance in the date, 
 so we will not make the Box-Cox transformation.
 
-# Prepare train and test data
+# Prepare train and test data (testing with the last year)
 ```{r}
 total_length <- length(time_series)
 
@@ -153,3 +153,19 @@ Hypothesis   | Test         | Result         | P-value
 Normality    | Shapiro-Wilk |     rejected   | `r shapiro.test(res_auto)$p.value`
 Unbiasedness | Wilcoxon     | not rejected   | `r wilcox.test(res_auto)$p.value`
 Stationarity | KPSS         | not rejected   | `r kpss.test(res_auto)$p.value`
+
+## Forecast the last year
+```{r, echo=FALSE}
+fit_short <- Arima(train_set, model = fit_auto)
+
+fc <- forecast(fit_short, h = test_length)
+
+accuracy(fc, test_set)
+```
+
+
+```{r, echo=FALSE, fig.height=5, fig.width=10}
+plot(forecast(fit_short, h = test_length), ylab = title, xlab = "Time")
+
+lines(time_series, col = "red")
+```
