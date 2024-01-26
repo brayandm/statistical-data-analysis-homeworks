@@ -54,3 +54,7 @@ plot(time_series, type = "l", ylab = title, col = "red")
 
 grid()
 ```
+
+### Notes:
+We have too many years in the data, so the forecast will be very inaccurate. 
+So then we will only use the data from 1975 to 1995, that is the last 20 years.
