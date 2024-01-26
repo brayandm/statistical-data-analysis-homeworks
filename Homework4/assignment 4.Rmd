@@ -363,7 +363,7 @@ So we'll use ARIMA(4,0,5)(1,1,2)[12] as our final model.
 
 ## Forecast the last year using our final model
 ```{r}
-fit_short <- Arima(train_set, model = fit_auto)
+fit_short <- Arima(time_series, model = fit_auto)
 
 fc <- forecast(fit_short, h = test_length)
 
@@ -373,8 +373,4 @@ accuracy(fc, test_set)
 
 ```{r, fig.height=5, fig.width=10}
 plot(fc, ylab = title, xlab = "Time")
-
-total_set <- c(train_set, test_set)
-
-lines(total_set, col = "red")
 ```
