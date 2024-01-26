@@ -329,6 +329,7 @@ lines(c(min(res, res_auto), max(res, res_auto)) * 2,
 dm.test(res, res_auto)
 ```
 
+### Notes:
 Diebold-Mariano test (p-value = 0.1096) does not find the differences between forecasting errors of two ARIMAs significant. 
 The residuals of two models have the same properties. 
 Automatic model has smaller AICc, so we'll use the automatic model.
@@ -349,4 +350,31 @@ lines(c(min(c(res_auto, res_ets),
             na.rm = TRUE), max(c(res_auto, res_ets), na.rm = TRUE)),
       c(min(c(res_auto, res_ets), na.rm = TRUE),
         max(c(res_auto, res_ets), na.rm = TRUE)), col = "red")
+```
+
+```{r, echo=F}
+dm.test(res_auto, res_ets)
+dm.test(res_auto, res_ets, alternative = "less")
+```
+
+### Notes:
+Diebold-Mariano test says ARIMA is better. and AIC, AICc, BIC of ARIMA are smaller than those of ETS.
+So we'll use ARIMA(4,0,5)(1,1,2)[12] as our final model.
+
+## Forecast the last year using our final model
+```{r}
+fit_short <- Arima(train_set, model = fit_auto)
+
+fc <- forecast(fit_short, h = test_length)
+
+accuracy(fc, test_set)
+```
+
+
+```{r, fig.height=5, fig.width=10}
+plot(fc, ylab = title, xlab = "Time")
+
+total_set <- c(train_set, test_set)
+
+lines(total_set, col = "red")
 ```
