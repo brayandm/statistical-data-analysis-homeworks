@@ -246,3 +246,20 @@ Hypothesis   | Test         | Result         | P-value
 Normality    | Shapiro-Wilk |     rejected   | `r shapiro.test(res)$p.value`
 Unbiasedness | Wilcoxon     | not rejected   | `r wilcox.test(res)$p.value`
 Stationarity | KPSS         | not rejected   | `r kpss.test(res)$p.value`
+
+## Forecast the last year
+```{r}
+fit_short <- Arima(train_set, model = fit)
+
+fc <- forecast(fit_short, h = test_length)
+
+accuracy(fc, test_set)
+```
+
+```{r, fig.height=5, fig.width=10}
+plot(fc, ylab = title, xlab = "Time")
+
+total_set <- c(train_set, test_set)
+
+lines(total_set, col = "red")
+```
