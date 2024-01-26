@@ -211,4 +211,4 @@ PACF:
 
 Next we'll look for the best models with auto.arima using d=1, D=1, max.p=12, max.q=12, max.P=6, max.Q=2 (where possible, we
  added 1 to every initial approximation found above just in case), and the parameters of the automatic model as starting points
-  of the search (start.p=2, start.q=1, start.P=2, start.Q=1).
+  of the search (start.p=11, start.q=11, start.P=5, start.Q=1).
