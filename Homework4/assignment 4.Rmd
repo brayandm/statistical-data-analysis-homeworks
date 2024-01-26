@@ -92,12 +92,14 @@ grid()
 
 lambda <- BoxCox.lambda(time_series)
 
-time_series_transformed <- BoxCox(time_series, lambda)
-
-plot(time_series_transformed,
+plot(BoxCox(time_series, lambda),
      ylab = "Transformed series", xlab = "", col = "red")
 
 title(main = toString(round(lambda, 3)))
 
 grid()
 ```
+
+### Notes:
+Looking at the plot of the original series, we can see that there is not so much variance in the date, 
+so we will not make the Box-Cox transformation.
