@@ -193,7 +193,7 @@ Now the series is stationary (p>`r kpss.test(diff(time_series, 12))$p.value`, KP
 ```{r, fig.height=5, fig.width=10}
 par(mfrow = c(1, 2))
 
-acf(time_series_diff, lag.max = 6 * 12, main = "")
+acf(time_series_diff, lag.max = 5 * 12, main = "")
 
-pacf(time_series_diff, lag.max = 6 * 12, main = "")
+pacf(time_series_diff, lag.max = 5 * 12, main = "")
 ```
