@@ -132,3 +132,9 @@ qqline(res_auto, col = "red")
 
 hist(res_auto)
 ```
+
+Hypothesis   | Test         | Result         | P-value
+------------ | ------------ | -------------- | ------------------------------
+Normality    | Shapiro-Wilk |     rejected   | `r shapiro.test(res_auto)$p.value`
+Unbiasedness | Wilcoxon     | not rejected   | `r wilcox.test(res_auto)$p.value`
+Stationarity | KPSS         | not rejected   | `r kpss.test(res_auto)$p.value`
