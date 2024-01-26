@@ -4,6 +4,8 @@ author: "Brayan Duran Medina"
 output: html_document
 ---
 
+### Monthly beer production in Australia from 1956 to 1995
+
 # Importing libraries
 ```{r, message=FALSE}
 library(readxl)
