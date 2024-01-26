@@ -222,7 +222,7 @@ fit <- auto.arima(time_series, d = 1, D = 1, max.p = 12,
 fit
 ```
 
-The lowest AICc has ARIMA(3,1,0)(3,1,1)[12]. Does it have good residuals?
+The lowest AICc has ARIMA(1,1,2)(5,1,1)[12]. Does it have good residuals?
 
 ```{r, echo=FALSE, fig.height=5, fig.width=10}
 res <- residuals(fit)
