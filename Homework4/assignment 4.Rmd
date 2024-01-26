@@ -58,3 +58,22 @@ grid()
 ### Notes:
 We have too many years in the data, so the forecast will be very inaccurate. 
 So then we will only use the data from 1975 to 1995, that is the last 20 years.
+
+# Cutting data to keep only the last 20 years
+```{r}
+data <- data[format(data$Date, "%Y") >= 1975, ]
+```
+
+# Creating new time series with the last 20 years
+```{r}
+time_series <- ts(data = data$Value, start =
+                    as.numeric(c(format(data$Date[1], "%Y"),
+                                 format(data$Date[1], "%m"))), freq = 12)
+```
+
+# Plotting new time series
+```{r}
+plot(time_series, type = "l", ylab = title, col = "red")
+
+grid()
+```
