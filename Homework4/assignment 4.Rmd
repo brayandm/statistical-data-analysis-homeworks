@@ -112,3 +112,23 @@ fit_auto <- auto.arima(time_series, biasadj = TRUE)
 
 fit_auto
 ```
+
+### Notes:
+The automatic model selection gives us an ARIMA(4,0,5)(1,1,2)[12] model.
+
+## Plot of residuals
+```{r, fecho=FALSE, fig.width=10, fig.height=6}
+res_auto <- residuals(fit_auto)
+
+plot(res_auto)
+```
+
+```{r, echo=FALSE, fig.width=10, fig.height=6}
+par(mfrow = c(1, 2))
+
+qqnorm(res_auto)
+
+qqline(res_auto, col = "red")
+
+hist(res_auto)
+```
