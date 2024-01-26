@@ -104,6 +104,21 @@ grid()
 Looking at the plot of the original series and the transformed one, we can see that there is not so much variance in the date, 
 so we will not make the Box-Cox transformation.
 
+# Prepare train and test data
+```{r}
+total_length <- length(time_series)
+
+test_length <- round(total_length / 10)
+
+cut_off_point <- total_length - test_length
+
+train_set <- time_series[1:cut_off_point]
+test_set <- time_series[(cut_off_point + 1):total_length]
+
+head(train_set)
+head(test_set)
+```
+
 # ARIMA
 
 ## Automatic model selection
