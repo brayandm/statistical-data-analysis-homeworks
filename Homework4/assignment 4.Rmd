@@ -101,5 +101,5 @@ grid()
 ```
 
 ### Notes:
-Looking at the plot of the original series, we can see that there is not so much variance in the date, 
+Looking at the plot of the original series and the transformed one, we can see that there is not so much variance in the date, 
 so we will not make the Box-Cox transformation.
