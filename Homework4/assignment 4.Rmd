@@ -212,3 +212,31 @@ PACF:
 Next we'll look for the best models with auto.arima using d=1, D=1, max.p=12, max.q=12, max.P=6, max.Q=2 (where possible, we
  added 1 to every initial approximation found above just in case), and the parameters of the automatic model as starting points
   of the search (start.p=11, start.q=11, start.P=5, start.Q=1).
+
+```{r, cache=TRUE}
+fit <- auto.arima(time_series, d = 1, D = 1, max.p = 12,
+                  max.q = 12, max.P = 6, max.Q = 2,
+                  start.p = 11, start.q = 11, start.P = 5, start.Q = 1,
+                  biasadj = TRUE)
+
+fit
+```
+
+The lowest AICc has ARIMA(3,1,0)(3,1,1)[12]. Does it have good residuals?
+
+```{r, echo=FALSE, fig.height=5, fig.width=10}
+res <- residuals(fit)
+
+plot(res)
+```
+
+## Q-Q plot and histogram of the residuals:
+```{r, echo=FALSE, fig.height=5.5, fig.width=10}
+par(mfrow = c(1, 2))
+
+qqnorm(res)
+
+qqline(res, col = "red")
+
+hist(res)
+```
