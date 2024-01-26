@@ -103,3 +103,12 @@ grid()
 ### Notes:
 Looking at the plot of the original series and the transformed one, we can see that there is not so much variance in the date, 
 so we will not make the Box-Cox transformation.
+
+# ARIMA
+
+## Automatic model selection
+```{r, echo=FALSE, cache=TRUE}
+fit_auto <- auto.arima(time_series, biasadj = TRUE)
+
+fit_auto
+```
