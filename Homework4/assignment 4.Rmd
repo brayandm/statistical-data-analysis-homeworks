@@ -82,3 +82,22 @@ grid()
 ```{r, fig.width=10, fig.height=10}
 plot(stl(time_series, s.window = "periodic"))
 ```
+
+# Make Box-Cox transformation
+```{r, fig.width=10, fig.height=10}
+par(mfrow = c(2, 1))
+
+plot(time_series, ylab = "Original series", xlab = "", col = "red")
+grid()
+
+lambda <- BoxCox.lambda(time_series)
+
+time_series_transformed <- BoxCox(time_series, lambda)
+
+plot(time_series_transformed,
+     ylab = "Transformed series", xlab = "", col = "red")
+
+title(main = toString(round(lambda, 3)))
+
+grid()
+```
