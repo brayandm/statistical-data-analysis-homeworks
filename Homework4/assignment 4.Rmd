@@ -201,11 +201,13 @@ pacf(time_series_diff, lag.max = 5 * 12, main = "")
 ### Notes:
 
 ACF:
-Since 12 is maximal significant seasonal lag, we could use Q=12/12=1
+
+- Since 12 is maximal significant seasonal lag, we could use Q=12/12=1
 as an initial approximation. Maximal significant lag before 12 is 11, hence the starting value q=11.
 
-PACF
-Following the same logic as above, we select initial values P=5, p=11.
+PACF:
+
+- Following the same logic as above, we select initial values P=5, p=11.
 
 Next we'll look for the best models with auto.arima using d=1, D=1, max.p=12, max.q=12, max.P=6, max.Q=2 (where possible, we
  added 1 to every initial approximation found above just in case), and the parameters of the automatic model as starting points
