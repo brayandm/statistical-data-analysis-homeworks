@@ -367,9 +367,7 @@ So we'll use ARIMA(4,0,5)(1,1,2)[12] as our final model.
 ```{r}
 fit_short <- Arima(time_series, model = fit_auto)
 
-fc <- forecast(fit_short, h = test_length)
-
-accuracy(fc, test_set)
+fc <- forecast(fit_short, h = 12)
 ```
 
 
