@@ -83,7 +83,7 @@ grid()
 plot(stl(time_series, s.window = "periodic"))
 ```
 
-# Make Box-Cox transformation
+# Box-Cox transformation
 ```{r, fig.width=10, fig.height=10}
 par(mfrow = c(2, 1))
 
