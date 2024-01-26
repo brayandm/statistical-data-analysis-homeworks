@@ -224,7 +224,7 @@ fit <- auto.arima(time_series, d = 0, D = 1, max.p = 12,
 fit
 ```
 
-The lowest AICc has ARIMA(1,1,2)(5,1,1)[12]. Does it have good residuals?
+The lowest AICc has ARIMA(0,0,0)(1,1,2)[12]. Does it have good residuals?
 
 ```{r, echo=FALSE, fig.height=5, fig.width=10}
 res <- residuals(fit)
@@ -245,7 +245,7 @@ hist(res)
 
 Hypothesis   | Test         | Result         | P-value
 ------------ | ------------ | -------------- | ------------------------------
-Normality    | Shapiro-Wilk |     rejected   | `r shapiro.test(res)$p.value`
+Normality    | Shapiro-Wilk | not rejected   | `r shapiro.test(res)$p.value`
 Unbiasedness | Wilcoxon     | not rejected   | `r wilcox.test(res)$p.value`
 Stationarity | KPSS         | not rejected   | `r kpss.test(res)$p.value`
 
@@ -363,7 +363,7 @@ dm.test(res_auto, res_ets, alternative = "less")
 Diebold-Mariano test says ARIMA is better. and AIC, AICc, BIC of ARIMA are smaller than those of ETS.
 So we'll use ARIMA(4,0,5)(1,1,2)[12] as our final model.
 
-## Forecast the last year using our final model
+## Forecast one year ahead using the final model
 ```{r}
 fit_short <- Arima(time_series, model = fit_auto)
 
