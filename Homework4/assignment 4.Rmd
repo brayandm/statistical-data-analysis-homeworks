@@ -171,3 +171,29 @@ total_set <- c(train_set, test_set)
 
 lines(total_set, col = "red")
 ```
+
+# Manual model tuning
+
+### Notes:
+
+The series is nonstationary (p<`r kpss.test(time_series)$p.value`, KPSS test) and clearly seasonal; let's do seasonal differencing:
+
+```{r, fig.height=5, fig.width=10}
+
+time_series_diff <- diff(time_series, 12)
+plot(time_series_diff, type = "l", col = "red")
+
+grid()
+```
+
+### Notes:
+Now the series is stationary (p>`r kpss.test(diff(time_series, 12))$p.value`, KPSS test) and we can try to fit an ARIMA model.
+
+## ACF and PACF plots
+```{r, fig.height=5, fig.width=10}
+par(mfrow = c(1, 2))
+
+acf(time_series_diff, lag.max = 5 * 12, main = "")
+
+pacf(time_series_diff, lag.max = 5 * 12, main = "")
+```
