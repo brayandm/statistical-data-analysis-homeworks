@@ -334,7 +334,7 @@ Diebold-Mariano test (p-value = 0.1096) does not find the differences between fo
 The residuals of two models have the same properties. 
 Automatic model has smaller AICc, so we'll use the automatic model.
 
-# Comparing the residuals of the best ARIMA and the best ETS models:
+## Comparing the residuals of the best ARIMA and the best ETS models:
 ```{r fig.width=8, fig.height=8}
 res_ets <- residuals(fit_ets, type = "response")
 
