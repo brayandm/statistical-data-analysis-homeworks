@@ -307,3 +307,28 @@ total_set <- c(train_set, test_set)
 
 lines(total_set, col = "red")
 ```
+
+# Final model selection
+
+## Comparing the residuals of two ARIMAs:
+```{r, fig.height=8, fig.width=8}
+res      <- residuals(fit, type = "response")
+res_auto <- residuals(fit_auto, type = "response")
+
+plot(res, res_auto, xlim = c(min(res, res_auto), max(res, res_auto)),
+     ylim = c(min(res, res_auto), max(res, res_auto)),
+     xlab = "Residuals of manually found model",
+     ylab = "Residuals of auto.arima model")
+
+grid()
+
+lines(c(min(res, res_auto), max(res, res_auto)) * 2,
+      c(min(res, res_auto), max(res, res_auto)) * 2, col = "red")
+```
+```{r, echo=F}
+dm.test(res, res_auto)
+```
+
+Diebold-Mariano test (p-value = 0.1096) does not find the differences between forecasting errors of two ARIMAs significant. 
+The residuals of two models have the same properties. 
+Automatic model has smaller AICc, so we'll use the automatic model.
