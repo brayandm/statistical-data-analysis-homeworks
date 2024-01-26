@@ -1,0 +1,54 @@
+---
+title: "Time Series"
+author: "Brayan Duran Medina"
+output: html_document
+---
+
+# Importing libraries
+```{r, message=FALSE}
+library(readxl)
+library(dplyr)
+library(ggplot2)
+library(GGally)
+library(ggcorrplot)
+library(MASS)
+library(lmtest)
+library(forecast)
+library(tseries)
+library(Hmisc)
+library(lubridate)
+```
+
+# Reading data
+```{r}
+data <- read.csv("monthly-beer-production-in-austr.csv",
+                 header = TRUE, sep = ",")
+head(data)
+```
+
+# Preparing data
+```{r}
+names(data)[1] <- "Date"
+names(data)[2] <- "Value"
+
+title <- "Monthly beer production in Australia"
+
+data$Value <- as.numeric(data$Value)
+data$Date <- as.Date(as.yearmon(data$Date, format = "%Y-%m"))
+
+head(data)
+```
+
+# Creating time series
+```{r}
+time_series <- ts(data = data$Value, start =
+                    as.numeric(c(format(data$Date[1], "%Y"),
+                                 format(data$Date[1], "%m"))), freq = 12)
+```
+
+# Plotting data
+```{r}
+plot(time_series, type = "l", ylab = title, col = "red")
+
+grid()
+```
