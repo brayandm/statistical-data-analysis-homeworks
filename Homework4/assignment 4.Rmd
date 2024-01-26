@@ -154,7 +154,7 @@ Normality    | Shapiro-Wilk |     rejected   | `r shapiro.test(res_auto)$p.value
 Unbiasedness | Wilcoxon     | not rejected   | `r wilcox.test(res_auto)$p.value`
 Stationarity | KPSS         | not rejected   | `r kpss.test(res_auto)$p.value`
 
-## Forecast the last year
+## Forecast the last year using the automatic model
 ```{r}
 fit_short <- Arima(train_set, model = fit_auto)
 
@@ -247,9 +247,53 @@ Normality    | Shapiro-Wilk |     rejected   | `r shapiro.test(res)$p.value`
 Unbiasedness | Wilcoxon     | not rejected   | `r wilcox.test(res)$p.value`
 Stationarity | KPSS         | not rejected   | `r kpss.test(res)$p.value`
 
-## Forecast the last year
+## Forecast the last year using the manual model
 ```{r}
 fit_short <- Arima(train_set, model = fit)
+
+fc <- forecast(fit_short, h = test_length)
+
+accuracy(fc, test_set)
+```
+
+```{r, fig.height=5, fig.width=10}
+plot(fc, ylab = title, xlab = "Time")
+
+total_set <- c(train_set, test_set)
+
+lines(total_set, col = "red")
+```
+
+# ETS model
+
+## Create ETS model
+```{r,}
+fit_ets <- ets(time_series, biasadj = TRUE)
+
+print(fit_ets)
+```
+
+## Plot of residuals
+```{r, fig.height=5, fig.width=10}
+tsdisplay(residuals(fit_ets))
+```
+
+```{rfig.height=5, fig.width=10}
+par(mfrow = c(1, 2))
+qqnorm(residuals(fit_ets))
+qqline(residuals(fit_ets), col = "red")
+hist(residuals(fit_ets))
+```
+
+Hypothesis   | Test         | Result         | P-value
+------------ | ------------ | -------------- | ------------------------------
+Normality    | Shapiro-Wilk | not rejected   | `r shapiro.test(residuals(fit_ets))$p.value`
+Unbiasedness | Wilcoxon     | not rejected   | `r wilcox.test(residuals(fit_ets))$p.value`
+Stationarity | KPSS         | not rejected   | `r kpss.test(residuals(fit_ets))$p.value`
+
+## Forecast the last year using the ETS model
+```{r}
+fit_short <- ets(time_series, model = fit_ets)
 
 fc <- forecast(fit_short, h = test_length)
 
