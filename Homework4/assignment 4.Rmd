@@ -245,9 +245,9 @@ hist(res)
 
 Hypothesis   | Test         | Result         | P-value
 ------------ | ------------ | -------------- | ------------------------------
-Normality    | Shapiro-Wilk | not rejected   | `r shapiro.test(res)$p.value`
-Unbiasedness | Wilcoxon     | not rejected   | `r wilcox.test(res)$p.value`
-Stationarity | KPSS         | not rejected   | `r kpss.test(res)$p.value`
+Normality    | Shapiro-Wilk |     rejected   | `r shapiro.test(res)$p.value`
+Unbiasedness | Wilcoxon     |     rejected   | `r wilcox.test(res)$p.value`
+Stationarity | KPSS         |     rejected   | `r kpss.test(res)$p.value`
 
 ## Forecast the last year using the manual model
 ```{r}
