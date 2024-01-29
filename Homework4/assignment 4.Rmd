@@ -328,13 +328,15 @@ lines(c(min(res, res_auto), max(res, res_auto)) * 2,
       c(min(res, res_auto), max(res, res_auto)) * 2, col = "red")
 ```
 ```{r, echo=F}
-dm.test(res, res_auto)
+dm.test(res_auto, res)
+dm.test(res_auto, res, alternative = "less")
 ```
 
 ### Notes:
-Diebold-Mariano test (p-value = 0.1096) does not find the differences between forecasting errors of two ARIMAs significant. 
-The residuals of two models have the same properties. 
-Automatic model has smaller AICc, so we'll use the automatic model.
+The Diebold-Mariano test indicates significant differences between the forecasting errors of two ARIMA models 
+(p-value = 1.711e-05 for two-sided and 8.555e-06 for one-sided 'less' alternative). This suggests that the 
+residuals of the two models differ in their forecasting accuracy. Given that the automatic model also has a 
+smaller AICc, we will use the automatic model for forecasting.
 
 ## Comparing the residuals of the best ARIMA and the best ETS models:
 ```{r fig.width=8, fig.height=8}
